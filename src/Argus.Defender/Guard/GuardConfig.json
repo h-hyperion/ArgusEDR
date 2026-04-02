@@ -1,0 +1,30 @@
+{
+  "toggles": [
+    { "id": "telemetry_diagtrack", "name": "Connected User Experiences and Telemetry", "category": "Telemetry", "description": "Disables the DiagTrack service that sends telemetry to Microsoft", "whatBreaks": "Microsoft telemetry collection stops", "enabled": true },
+    { "id": "telemetry_diagnostic_data", "name": "Diagnostic Data Collection", "category": "Telemetry", "description": "Sets diagnostic data to Security level (minimum)", "whatBreaks": "Windows Insider and some feedback features", "enabled": true },
+    { "id": "telemetry_app_usage", "name": "Application Usage Tracking", "category": "Telemetry", "description": "Disables app launch tracking and recommendations", "whatBreaks": "Start menu app suggestions based on usage", "enabled": true },
+    { "id": "telemetry_activity_history", "name": "Activity History", "category": "Telemetry", "description": "Disables activity history collection and upload", "whatBreaks": "Timeline feature and cross-device activity sync", "enabled": true },
+    { "id": "telemetry_inking_typing", "name": "Inking and Typing Data", "category": "Telemetry", "description": "Disables inking and typing data collection", "whatBreaks": "Personalized inking and typing suggestions", "enabled": true },
+    { "id": "telemetry_speech", "name": "Speech Recognition Data", "category": "Telemetry", "description": "Disables online speech recognition data collection", "whatBreaks": "Online speech recognition improvements", "enabled": true },
+    { "id": "telemetry_location", "name": "Location Tracking", "category": "Telemetry", "description": "Disables location service for the device", "whatBreaks": "Location-based apps (Maps, Weather, Find My Device)", "enabled": false },
+    { "id": "telemetry_wer", "name": "Windows Error Reporting", "category": "Telemetry", "description": "Disables automatic error report submission", "whatBreaks": "Automatic crash report submission to Microsoft", "enabled": true },
+    { "id": "telemetry_feedback_freq", "name": "Feedback Frequency", "category": "Telemetry", "description": "Disables feedback prompts from Windows", "whatBreaks": "Windows Feedback Hub prompts", "enabled": true },
+    { "id": "telemetry_compat_appraiser", "name": "Compatibility Appraiser", "category": "Telemetry", "description": "Disables the Compatibility Appraiser scheduled task", "whatBreaks": "Windows upgrade compatibility checks", "enabled": true },
+    { "id": "cloud_onedrive", "name": "OneDrive Auto-Start", "category": "Cloud", "description": "Prevents OneDrive from starting automatically", "whatBreaks": "OneDrive automatic sync on login", "enabled": false },
+    { "id": "cloud_cortana", "name": "Cortana", "category": "Cloud", "description": "Disables Cortana assistant", "whatBreaks": "Cortana voice assistant features", "enabled": true },
+    { "id": "cloud_clipboard", "name": "Cloud Clipboard Sync", "category": "Cloud", "description": "Disables clipboard sync across devices", "whatBreaks": "Cross-device clipboard sharing", "enabled": true },
+    { "id": "cloud_spotlight", "name": "Windows Spotlight", "category": "Cloud", "description": "Disables Windows Spotlight lock screen content", "whatBreaks": "Dynamic lock screen images and suggestions", "enabled": false },
+    { "id": "cloud_connected_experiences", "name": "Connected Experiences", "category": "Cloud", "description": "Disables Office connected experiences", "whatBreaks": "Some Office online features and templates", "enabled": true },
+    { "id": "ads_advertising_id", "name": "Advertising ID", "category": "Advertising", "description": "Disables the per-user advertising identifier", "whatBreaks": "Personalized ads in Microsoft apps", "enabled": true },
+    { "id": "ads_tailored_experiences", "name": "Tailored Experiences", "category": "Advertising", "description": "Disables tailored tips and recommendations", "whatBreaks": "Personalized Windows tips and suggestions", "enabled": true },
+    { "id": "ads_start_suggestions", "name": "Start Menu Suggestions", "category": "Advertising", "description": "Disables suggested apps in Start menu", "whatBreaks": "App suggestions in Start menu", "enabled": true },
+    { "id": "ads_notification_ads", "name": "Notification Ads", "category": "Advertising", "description": "Disables tips and suggestions in notifications", "whatBreaks": "Windows feature suggestion notifications", "enabled": true },
+    { "id": "network_delivery_opt", "name": "Delivery Optimization", "category": "Network", "description": "Disables peer-to-peer update delivery", "whatBreaks": "P2P Windows Update sharing (LAN and internet)", "enabled": true },
+    { "id": "network_ncsi", "name": "Network Connectivity Status Indicator", "category": "Network", "description": "Disables NCSI active probing", "whatBreaks": "Automatic network connectivity detection", "enabled": false },
+    { "id": "network_wifi_sense", "name": "Wi-Fi Sense", "category": "Network", "description": "Disables automatic Wi-Fi hotspot sharing", "whatBreaks": "Automatic connection to shared networks", "enabled": true },
+    { "id": "diag_sample_submission", "name": "Automatic Sample Submission", "category": "Diagnostics", "description": "Disables automatic malware sample submission to Microsoft", "whatBreaks": "Windows Defender automatic sample upload", "enabled": false },
+    { "id": "diag_app_telemetry", "name": "Application Telemetry", "category": "Diagnostics", "description": "Disables application telemetry via AITAgent", "whatBreaks": "Application compatibility telemetry", "enabled": true },
+    { "id": "diag_device_census", "name": "Device Census", "category": "Diagnostics", "description": "Disables the Device Census scheduled task", "whatBreaks": "Device inventory data collection", "enabled": true },
+    { "id": "diag_scheduled_tasks", "name": "Diagnostic Scheduled Tasks", "category": "Diagnostics", "description": "Disables various diagnostic scheduled tasks", "whatBreaks": "Background diagnostic data collection tasks", "enabled": true }
+  ]
+}

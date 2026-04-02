@@ -16,4 +16,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="Guard\GuardConfig.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>
