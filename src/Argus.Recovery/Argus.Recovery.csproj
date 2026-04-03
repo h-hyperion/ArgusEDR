@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.*" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" />
   </ItemGroup>
 
