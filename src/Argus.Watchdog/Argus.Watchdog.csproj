@@ -19,5 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" />
+    <ProjectReference Include="..\Argus.Recovery\Argus.Recovery.csproj" />
   </ItemGroup>
 </Project>

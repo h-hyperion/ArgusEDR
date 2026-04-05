@@ -3,12 +3,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Argus.Core\Argus.Core.csproj" />
     <ProjectReference Include="..\Argus.Defender\Argus.Defender.csproj" />
-    <ProjectReference Include="..\Argus.Scanner\Argus.Scanner.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.*" />
     <PackageReference Include="Serilog" Version="3.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.*" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.*" />
   </ItemGroup>
 
   <PropertyGroup>

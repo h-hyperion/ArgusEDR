@@ -88,12 +88,15 @@ public sealed class QuarantineStore : IQuarantineStore
     {
         var keyPath = Path.Combine(_dir, ".qkey");
         if (File.Exists(keyPath))
-            return File.ReadAllBytes(keyPath);
+        {
+            var protectedBytes = File.ReadAllBytes(keyPath);
+            return ProtectedData.Unprotect(protectedBytes, null, DataProtectionScope.LocalMachine);
+        }
 
-        // In production this would use DPAPI — for now generate and store
-        var key = new byte[32]; // 256-bit
+        var key = new byte[32]; // 256-bit AES key
         RandomNumberGenerator.Fill(key);
-        File.WriteAllBytes(keyPath, key);
+        var protectedKey = ProtectedData.Protect(key, null, DataProtectionScope.LocalMachine);
+        File.WriteAllBytes(keyPath, protectedKey);
         return key;
     }
 

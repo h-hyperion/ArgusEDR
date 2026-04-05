@@ -1,12 +1,109 @@
-﻿<Window x:Class="Argus.GUI.MainWindow"
+<Window x:Class="Argus.GUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Argus.GUI"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        xmlns:vm="clr-namespace:Argus.GUI.ViewModels"
+        xmlns:views="clr-namespace:Argus.GUI.Views"
+        xmlns:converters="clr-namespace:Argus.GUI.Converters"
+        Title="Argus EDR" Height="720" Width="1100" MinWidth="900" MinHeight="600"
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource BgPrimary}">
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVis"/>
+
+        <!-- Map ViewModel types to View controls -->
+        <DataTemplate DataType="{x:Type vm:DashboardViewModel}">
+            <views:DashboardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ScannerViewModel}">
+            <views:ScannerView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:DefenderViewModel}">
+            <views:DefenderView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:PrivacyGuardViewModel}">
+            <views:PrivacyGuardView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:QuarantineViewModel}">
+            <views:QuarantineView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <views:SettingsView/>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Safe Mode Banner -->
+        <Border Grid.Row="0" Background="{StaticResource AccentRed}" Padding="12 8"
+                Visibility="{Binding IsSafeMode, Converter={StaticResource BoolToVisibility}}">
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="Repair" Margin="12 0 0 0"
+                        Style="{StaticResource PrimaryButton}"
+                        Command="{Binding RepairArgusCommand}"/>
+                <TextBlock Text="{Binding SafeModeReason, StringFormat='SYSTEM COMPROMISED - {0}'}"
+                           Foreground="White" FontWeight="Bold" FontSize="13"
+                           VerticalAlignment="Center"/>
+            </DockPanel>
+        </Border>
+
+        <!-- Main Content: Sidebar + Content -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <Border Grid.Column="0" Background="{StaticResource BgSidebar}"
+                    BorderBrush="{StaticResource BorderDefault}" BorderThickness="0 0 1 0">
+                <DockPanel>
+                    <!-- Logo -->
+                    <StackPanel DockPanel.Dock="Top" Margin="16 20 16 24">
+                        <TextBlock Text="ARGUS" FontSize="20" FontWeight="Bold"
+                                   Foreground="{StaticResource AccentGold}"/>
+                        <TextBlock Text="Endpoint Detection &amp; Response" FontSize="10"
+                                   Foreground="{StaticResource TextMuted}" Margin="0 2 0 0"/>
+                    </StackPanel>
+
+                    <!-- Nav Items -->
+                    <StackPanel DockPanel.Dock="Top">
+                        <Button Content="Dashboard" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowDashboardCommand}"/>
+                        <Button Content="Scanner" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowScannerCommand}"/>
+                        <Button Content="Defender" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowDefenderCommand}"/>
+                        <Button Content="Privacy Guard" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowPrivacyGuardCommand}"/>
+                        <Button Content="Quarantine" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowQuarantineCommand}"/>
+                        <Button Content="Settings" Style="{StaticResource NavButton}"
+                                Command="{Binding ShowSettingsCommand}"/>
+                    </StackPanel>
+
+                    <!-- Spacer -->
+                    <Border/>
+                </DockPanel>
+            </Border>
+
+            <!-- Content Area -->
+            <Border Grid.Column="1" Padding="24 20">
+                <ContentControl Content="{Binding CurrentView}"/>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <Border Grid.Row="2" Background="{StaticResource BgSurface}" Padding="12 6"
+                BorderBrush="{StaticResource BorderDefault}" BorderThickness="0 1 0 0">
+            <TextBlock Text="{Binding PipeBridgeStatus}" FontSize="11"
+                       Foreground="{StaticResource TextMuted}"/>
+        </Border>
     </Grid>
 </Window>

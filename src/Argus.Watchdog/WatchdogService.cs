@@ -153,6 +153,27 @@ public sealed class WatchdogService : BackgroundService
 
     private void ActivateSafeMode(string offendingModule)
     {
-        _log.LogWarning("Safe Mode activated due to {Module}", offendingModule);
+        var reason = $"Module failure: {offendingModule}";
+        _log.LogCritical("Activating Safe Mode - {Reason}", reason);
+
+        try
+        {
+            var controller = new Argus.Recovery.SafeModeController();
+            controller.Activate(reason);
+        }
+        catch (Exception ex)
+        {
+            _log.LogError(ex, "Failed to activate Safe Mode via SafeModeController - writing sentinel directly");
+            try
+            {
+                Directory.CreateDirectory(ArgusConstants.StateDir);
+                File.WriteAllText(ArgusConstants.SafeModeSentinelPath,
+                    $"Activated: {DateTimeOffset.UtcNow:O}\nReason: {reason}\nMachine: {Environment.MachineName}\n");
+            }
+            catch (Exception innerEx)
+            {
+                _log.LogError(innerEx, "Failed to write Safe Mode sentinel file");
+            }
+        }
     }
 }

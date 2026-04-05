@@ -98,7 +98,12 @@ public sealed class GuiPipeBridge : IDisposable
             if (!File.Exists(keyPath))
                 return null;
 
-            var raw = Convert.FromBase64String(File.ReadAllText(keyPath));
+            // Key is stored as DPAPI-protected raw bytes (LocalMachine scope)
+            var protectedBytes = File.ReadAllBytes(keyPath);
+            var raw = System.Security.Cryptography.ProtectedData.Unprotect(
+                protectedBytes, null,
+                System.Security.Cryptography.DataProtectionScope.LocalMachine);
+
             if (raw.Length != 32)
             {
                 Log.Warning("IPC key has wrong size ({Size} bytes)", raw.Length);
@@ -109,6 +114,11 @@ public sealed class GuiPipeBridge : IDisposable
         catch (UnauthorizedAccessException)
         {
             // Standard user can't read SYSTEM-only config — will retry after elevation
+            return null;
+        }
+        catch (System.Security.Cryptography.CryptographicException ex)
+        {
+            Log.Warning(ex, "Failed to decrypt IPC key (DPAPI scope mismatch or corrupt key)");
             return null;
         }
         catch (Exception ex)
@@ -193,8 +203,21 @@ public sealed class GuiPipeBridge : IDisposable
 
     public async Task SendScanRequestAsync(string scanPath, CancellationToken ct)
     {
-        // TODO: Wire through to Watchdog via IPC in Phase 10+
-        throw new NotImplementedException("Scan via IPC not yet implemented");
+        if (!_pipeAvailable)
+            throw new InvalidOperationException("Not connected to Argus service");
+
+        var hmacKey = LoadHmacKey();
+        if (hmacKey == null)
+            throw new InvalidOperationException("IPC key not available");
+
+        using var pipe = new ArgusPipeClient(hmacKey, ArgusConstants.ModuleGui);
+        await pipe.ConnectAsync(ct);
+
+        var msg = PipeMessage.Create(
+            PipeMessageType.ScanRequest,
+            ArgusConstants.ModuleGui,
+            new { Path = scanPath });
+        await pipe.SendAsync(msg, ct);
     }
 
     public void Dispose()
