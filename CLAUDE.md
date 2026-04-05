@@ -61,9 +61,10 @@ This applies to ALL agents — main sessions, subagents, and parallel workers. B
 |-------|--------|-------------|
 | 1-8 | DONE | Foundation through Recovery |
 | 9 | DONE | GUI (WPF shell, MVVM, Dashboard, Privacy Guard) |
-| 10 | TODO | Integration (end-to-end pipeline wiring) |
-| 11 | TODO | Security Center & DNS Protection |
-| 12 | TODO | Operational Completeness & Installer |
+| 10 | DONE | Integration (end-to-end pipeline wiring, installer) |
+| 11 | DONE | Security Center & DNS Protection |
+| 12 | DONE | Operational Completeness & Uninstaller |
+| GUI | DONE | Redesign — black/gold/red theme, MVVM views |
 
 ---
 
