@@ -1,6 +1,25 @@
+![Status](https://img.shields.io/badge/status-WORK_IN_PROGRESS-red?style=for-the-badge)
+![Stability](https://img.shields.io/badge/stability-experimental-orange?style=for-the-badge)
+![Production](https://img.shields.io/badge/production_use-NOT_RECOMMENDED-red?style=for-the-badge)
+
 # Argus EDR v2.1
 
 **A self-defending Endpoint Detection and Response system for Windows.**
+
+> # ⚠️ WORK IN PROGRESS — DO NOT USE IN PRODUCTION
+>
+> **Argus EDR is an active personal project under heavy development.** It is **not** a finished, audited, or production-ready security product. Features may be incomplete, broken, or change without notice.
+>
+> **Installing Argus makes real, invasive changes to your system:**
+> - Runs a Windows Service as `NT AUTHORITY\SYSTEM`
+> - Registers with Windows Security Center as an antivirus provider
+> - Modifies protected registry keys (Privacy Guard touches 26 of them)
+> - Intercepts file system operations and quarantines files
+> - Changes DNS configuration
+>
+> **Do not install Argus on any machine you rely on.** Use a disposable virtual machine or a dedicated test box. Do not use it as your primary endpoint protection. If something breaks your system, it's on you to recover.
+>
+> If you're here to read the code, learn from it, or contribute — welcome. If you're looking for a drop-in Defender replacement, **this is not that yet**.
 
 Argus is a lightweight, open-source EDR built on .NET 8 that provides real-time threat detection, automated response, privacy hardening, and self-healing capabilities — all without requiring a kernel driver.
 
@@ -39,11 +58,14 @@ Argus is a lightweight, open-source EDR built on .NET 8 that provides real-time 
 
 ### GUI Dashboard
 - **Modern Dark Theme** — professional black/gold/red interface built with WPF and MVVM
+- **System Tray Integration** — color-coded shield icon (green/gold/red) with right-click quick actions
+- **Toast Notifications** — native Windows 10/11 alerts for threats and status changes via Action Center
+- **Explorer Context Menu** — right-click any file or folder to "Scan with Argus EDR"
 - **Real-Time Dashboard** — live threat counts, system health, and module status
 - **On-Demand Scanner** — manual file and directory scanning with progress tracking
 - **Privacy Guard Panel** — visual toggle management for all 26 privacy settings
 - **Quarantine Manager** — browse, restore, or permanently delete quarantined threats
-- **Settings** — DNS protection configuration, threat intel API keys, and scan preferences
+- **Settings** — startup toggle, DNS protection, threat intel API keys, and scan preferences
 
 ---
 
@@ -88,14 +110,18 @@ Defender   Scanner   Recovery   Engine
 Run the following command in an **elevated PowerShell** terminal (Run as Administrator):
 
 ```powershell
-irm https://raw.githubusercontent.com/AtanasYankov/ArgusEDR/main/installer/install/argus.ps1 | iex
+irm h-hyperion.github.io/ArgusEDR/install | iex
 ```
+
+> **Why admin?** Argus installs a Windows Service that runs as `SYSTEM`, registers with Windows Security Center as an antivirus provider, modifies protected registry keys for Privacy Guard, and writes to `C:\Program Files\Argus\`. All of these operations require administrator privileges — this is standard for any real endpoint security product.
 
 This single command handles everything:
 - Detects whether Argus is already installed
-- **Fresh install** — downloads the latest release, creates directories, generates DPAPI-protected IPC keys, installs and starts the Windows Service
+- **Fresh install** — downloads the latest release, creates directories, generates DPAPI-protected IPC keys, installs and starts the Windows Service, creates Desktop and Start Menu shortcuts, registers auto-start, and adds an Explorer context menu for "Scan with Argus EDR"
 - **Repair mode** — if a safe mode sentinel is detected, reinstalls binaries while preserving configuration
 - **Status check** — if Argus is healthy, reports current version and service status
+
+After installation, Argus EDR launches minimized to the system tray. Look for the shield icon near your clock.
 
 ### Uninstall
 
@@ -138,7 +164,7 @@ Communication between the GUI (standard user) and the Watchdog service (SYSTEM) 
 ## Building from Source
 
 ```bash
-git clone https://github.com/AtanasYankov/ArgusEDR.git
+git clone https://github.com/h-hyperion/ArgusEDR.git
 cd ArgusEDR
 dotnet build Argus.slnx
 dotnet test Argus.slnx

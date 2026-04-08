@@ -1,0 +1,4 @@
+# Argus EDR — install bootstrapper
+# Fetches and executes the real installer from the main branch.
+# This file is served by GitHub Pages at https://h-hyperion.github.io/ArgusEDR/install
+iex (irm 'https://raw.githubusercontent.com/h-hyperion/ArgusEDR/main/installer/install/argus.ps1')
