@@ -1,23 +1,26 @@
-﻿using System.Text;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Argus.GUI;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     public MainWindow()
     {
         InitializeComponent();
+    }
+
+    protected override void OnClosing(CancelEventArgs e)
+    {
+        // If the app is truly exiting (via tray Exit), allow the close
+        if (Application.Current is App app && app.IsExiting)
+        {
+            base.OnClosing(e);
+            return;
+        }
+
+        // Otherwise, hide to system tray instead of closing
+        e.Cancel = true;
+        Hide();
     }
 }

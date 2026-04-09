@@ -49,6 +49,35 @@
                     </Style>
                 </TabControl.Resources>
 
+                <!-- General Tab -->
+                <TabItem Header="General" IsSelected="True">
+                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                        <StackPanel>
+                            <TextBlock Text="General Settings" FontSize="14" FontWeight="Bold"
+                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+
+                            <Border Background="{StaticResource BgElevated}" Padding="16"
+                                    CornerRadius="8" Margin="0 0 0 12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Launch Argus at startup" FontSize="13"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                        <TextBlock Text="Start minimized to system tray when you log in"
+                                                   FontSize="11" Foreground="{StaticResource TextMuted}"
+                                                   Margin="0 4 0 0"/>
+                                    </StackPanel>
+                                    <CheckBox Grid.Column="1" IsChecked="{Binding LaunchAtStartup}"
+                                              VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </TabItem>
+
                 <!-- DNS Tab -->
                 <TabItem Header="DNS">
                     <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
