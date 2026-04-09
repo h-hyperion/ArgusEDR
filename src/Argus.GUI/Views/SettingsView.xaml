@@ -10,37 +10,46 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Page Header -->
-            <StackPanel>
-                <TextBlock Text="Settings" FontSize="24" FontWeight="Bold"
-                           Foreground="{StaticResource TextPrimary}"/>
-                <TextBlock Text="DNS, API keys, and update policy" FontSize="13"
-                           Foreground="{StaticResource TextMuted}" Margin="0 4 0 0"/>
-                <Border Height="1" Background="{StaticResource BorderDefault}" Margin="0 16"/>
+            <!-- Page header -->
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="SETTINGS" Style="{StaticResource CinzelSectionTitle}"/>
+                <TextBlock Text="DNS, API keys, and update policy"
+                           FontFamily="{StaticResource FontBarlow}"
+                           FontSize="13"
+                           Foreground="{StaticResource TextSecondary}"
+                           Margin="0 6 0 0"/>
+                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
             </StackPanel>
 
-            <TabControl Grid.Row="1" Margin="0" Background="Transparent"
-                        BorderBrush="Transparent" Foreground="{StaticResource TextPrimary}">
+            <TabControl Grid.Row="1"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Foreground="{StaticResource TextPrimary}">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Background" Value="{StaticResource BgSurface}"/>
                         <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
-                        <Setter Property="Padding" Value="20 10"/>
+                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Padding" Value="22 10"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    <Border x:Name="bg"
+                                            Background="{TemplateBinding Background}"
                                             Padding="{TemplateBinding Padding}"
-                                            CornerRadius="8 8 0 0"
+                                            BorderBrush="{StaticResource BorderDefault}"
+                                            BorderThickness="1 1 1 0"
                                             Margin="0 0 4 0">
-                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="bg" Property="Background" Value="{StaticResource BgElevated}"/>
+                                            <Setter TargetName="bg" Property="Background" Value="{StaticResource BgStatCard}"/>
                                             <Setter TargetName="bg" Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                            <Setter TargetName="bg" Property="BorderThickness" Value="0 2 0 0"/>
-                                            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                            <Setter TargetName="bg" Property="BorderThickness" Value="1 2 1 0"/>
+                                            <Setter Property="Foreground" Value="{StaticResource AccentGoldLight}"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -50,27 +59,29 @@
                 </TabControl.Resources>
 
                 <!-- General Tab -->
-                <TabItem Header="General" IsSelected="True">
-                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                <TabItem Header="GENERAL" IsSelected="True">
+                    <Border Style="{StaticResource ContentCard}" Margin="0">
                         <StackPanel>
-                            <TextBlock Text="General Settings" FontSize="14" FontWeight="Bold"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+                            <TextBlock Text="—  GENERAL SETTINGS  —"
+                                       Style="{StaticResource CinzelSectionTitle}"
+                                       FontSize="13"
+                                       Margin="0 0 0 16"/>
 
-                            <Border Background="{StaticResource BgElevated}" Padding="16"
-                                    CornerRadius="8" Margin="0 0 0 12">
+                            <Border Style="{StaticResource ToggleRow}" Margin="0 0 0 8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0">
-                                        <TextBlock Text="Launch Argus at startup" FontSize="13"
-                                                   Foreground="{StaticResource TextPrimary}"/>
+                                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                                        <TextBlock Text="Launch Argus at startup"
+                                                   Style="{StaticResource ToggleRowTitle}"/>
                                         <TextBlock Text="Start minimized to system tray when you log in"
-                                                   FontSize="11" Foreground="{StaticResource TextMuted}"
-                                                   Margin="0 4 0 0"/>
+                                                   Style="{StaticResource ToggleRowSub}"/>
                                     </StackPanel>
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding LaunchAtStartup}"
+                                    <CheckBox Grid.Column="1"
+                                              Style="{StaticResource ToggleSwitch}"
+                                              IsChecked="{Binding LaunchAtStartup}"
                                               VerticalAlignment="Center"/>
                                 </Grid>
                             </Border>
@@ -80,71 +91,110 @@
 
                 <!-- DNS Tab -->
                 <TabItem Header="DNS">
-                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                    <Border Style="{StaticResource ContentCard}" Margin="0">
                         <StackPanel>
-                            <TextBlock Text="DNS Configuration" FontSize="14" FontWeight="Bold"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+                            <TextBlock Text="—  DNS CONFIGURATION  —"
+                                       Style="{StaticResource CinzelSectionTitle}"
+                                       FontSize="13"
+                                       Margin="0 0 0 16"/>
 
-                            <TextBlock Text="Profile" FontSize="12" Foreground="{StaticResource TextSecondary}"
-                                       Margin="0 0 0 4"/>
-                            <ComboBox ItemsSource="{Binding DnsProfiles.SelectedItem.Name}"
+                            <TextBlock Text="PROFILE"
+                                       FontFamily="{StaticResource FontBarlowCondensed}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource AccentGold}"
+                                       Margin="0 0 0 6"/>
+                            <ComboBox ItemsSource="{Binding DnsProfiles}"
+                                      SelectedItem="{Binding SelectedDnsProfile}"
                                       DisplayMemberPath="Name"
-                                      Style="{DynamicResource DarkComboBox}" Margin="0 0 0 16"/>
+                                      Style="{DynamicResource DarkComboBox}"
+                                      Margin="0 0 0 18"/>
 
-                            <TextBlock Text="Primary DNS" FontSize="12" Foreground="{StaticResource TextSecondary}"
-                                       Margin="0 0 0 4"/>
-                            <TextBlock Text="{Binding SelectedDnsProfile.Primary}" FontSize="14"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+                            <TextBlock Text="PRIMARY DNS"
+                                       FontFamily="{StaticResource FontBarlowCondensed}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource AccentGold}"
+                                       Margin="0 0 0 6"/>
+                            <TextBlock Text="{Binding SelectedDnsProfile.Primary}"
+                                       FontFamily="{StaticResource FontCinzel}"
+                                       FontSize="16"
+                                       Foreground="{StaticResource TextPrimary}"
+                                       Margin="0 0 0 18"/>
 
-                            <TextBlock Text="Secondary DNS" FontSize="12" Foreground="{StaticResource TextSecondary}"
-                                       Margin="0 0 0 4"/>
-                            <TextBlock Text="{Binding SelectedDnsProfile.Secondary}" FontSize="14"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+                            <TextBlock Text="SECONDARY DNS"
+                                       FontFamily="{StaticResource FontBarlowCondensed}"
+                                       FontSize="11"
+                                       FontWeight="Medium"
+                                       Foreground="{StaticResource AccentGold}"
+                                       Margin="0 0 0 6"/>
+                            <TextBlock Text="{Binding SelectedDnsProfile.Secondary}"
+                                       FontFamily="{StaticResource FontCinzel}"
+                                       FontSize="16"
+                                       Foreground="{StaticResource TextPrimary}"
+                                       Margin="0 0 0 18"/>
 
-                            <Button Content="Apply DNS Settings" Style="{StaticResource PrimaryButton}"
+                            <Button Content="Apply DNS Settings"
+                                    Style="{StaticResource PrimaryButton}"
                                     Command="{Binding ApplyDnsCommand}"
-                                    HorizontalAlignment="Left" Margin="0 16 0 0"/>
+                                    HorizontalAlignment="Left"
+                                    Margin="0 12 0 0"/>
                         </StackPanel>
                     </Border>
                 </TabItem>
 
                 <!-- API Keys Tab -->
-                <TabItem Header="API Keys">
-                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                <TabItem Header="API KEYS">
+                    <Border Style="{StaticResource ContentCard}" Margin="0">
                         <StackPanel>
-                            <TextBlock Text="Service API Keys" FontSize="14" FontWeight="Bold"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+                            <TextBlock Text="—  SERVICE API KEYS  —"
+                                       Style="{StaticResource CinzelSectionTitle}"
+                                       FontSize="13"
+                                       Margin="0 0 0 16"/>
 
-                            <Border Background="{StaticResource BgElevated}" Padding="16"
-                                    CornerRadius="8" Margin="0 0 0 16">
-                                <TextBlock Text="VirusTotal - Not configured" FontSize="12"
+                            <Border Background="{StaticResource BgStatCard}"
+                                    BorderBrush="{StaticResource BorderDefault}"
+                                    BorderThickness="1"
+                                    Padding="20 14"
+                                    Margin="0 0 0 16">
+                                <TextBlock Text="VirusTotal — Not configured"
+                                           FontFamily="{StaticResource FontBarlow}"
+                                           FontSize="12"
                                            Foreground="{StaticResource TextMuted}"/>
                             </Border>
 
-                            <Button Content="Add Key" Style="{StaticResource SecondaryButton}"
+                            <Button Content="Add Key"
+                                    Style="{StaticResource SecondaryButton}"
                                     HorizontalAlignment="Left"/>
                         </StackPanel>
                     </Border>
                 </TabItem>
 
                 <!-- Auto-Update Tab -->
-                <TabItem Header="Auto-Update">
-                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                <TabItem Header="AUTO-UPDATE">
+                    <Border Style="{StaticResource ContentCard}" Margin="0">
                         <StackPanel>
-                            <TextBlock Text="Update Policy" FontSize="14" FontWeight="Bold"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 16"/>
+                            <TextBlock Text="—  UPDATE POLICY  —"
+                                       Style="{StaticResource CinzelSectionTitle}"
+                                       FontSize="13"
+                                       Margin="0 0 0 16"/>
 
                             <StackPanel Margin="0 0 0 8">
-                                <RadioButton Content="Minor updates only" Foreground="{StaticResource TextPrimary}"
-                                             Margin="0 4" GroupName="UpdatePolicy"/>
-                                <RadioButton Content="Minor and major updates" Foreground="{StaticResource TextPrimary}"
-                                             Margin="0 4" GroupName="UpdatePolicy"/>
-                                <RadioButton Content="Critical only" Foreground="{StaticResource TextPrimary}"
-                                             Margin="0 4" GroupName="UpdatePolicy"/>
+                                <RadioButton Content="Minor updates only"
+                                             Margin="0 6"
+                                             GroupName="UpdatePolicy"/>
+                                <RadioButton Content="Minor and major updates"
+                                             Margin="0 6"
+                                             GroupName="UpdatePolicy"/>
+                                <RadioButton Content="Critical only"
+                                             Margin="0 6"
+                                             GroupName="UpdatePolicy"/>
                             </StackPanel>
 
-                            <Button Content="Save Policy" Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Left" Margin="0 16 0 0"/>
+                            <Button Content="Save Policy"
+                                    Style="{StaticResource PrimaryButton}"
+                                    HorizontalAlignment="Left"
+                                    Margin="0 16 0 0"/>
                         </StackPanel>
                     </Border>
                 </TabItem>

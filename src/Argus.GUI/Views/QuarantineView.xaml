@@ -12,38 +12,55 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Page Header -->
-            <StackPanel>
-                <TextBlock Text="Quarantine" FontSize="24" FontWeight="Bold"
-                           Foreground="{StaticResource TextPrimary}"/>
-                <TextBlock FontSize="13" Foreground="{StaticResource TextMuted}" Margin="0 4 0 0">
-                    <Run Text="Isolated files awaiting review - "/>
-                    <Run Text="{Binding ItemCount}" Foreground="{StaticResource TextPrimary}" FontWeight="Bold"/>
-                    <Run Text=" files"/>
+            <!-- Page header -->
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="QUARANTINE" Style="{StaticResource CinzelSectionTitle}"/>
+                <TextBlock FontFamily="{StaticResource FontBarlow}"
+                           FontSize="13"
+                           Foreground="{StaticResource TextSecondary}"
+                           Margin="0 6 0 0">
+                    <Run Text="Isolated files awaiting review — "/>
+                    <Run Text="{Binding ItemCount}" Foreground="{StaticResource AccentGoldLight}" FontWeight="SemiBold"/>
+                    <Run Text=" files held in the vault."/>
                 </TextBlock>
-                <Border Height="1" Background="{StaticResource BorderDefault}" Margin="0 16"/>
+                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
             </StackPanel>
 
-            <!-- Empty state -->
-            <Border Grid.Row="1" Padding="16" Background="{StaticResource BgSurface}"
-                    CornerRadius="8" Margin="0 0 0 16" BorderBrush="{StaticResource BorderDefault}"
-                    BorderThickness="1">
-                <TextBlock Text="{Binding StatusMessage}" FontSize="12"
-                           Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center"/>
+            <!-- Status -->
+            <Border Grid.Row="1"
+                    Style="{StaticResource ContentCard}"
+                    Margin="0 0 0 16"
+                    Padding="20 14">
+                <TextBlock Text="{Binding StatusMessage}"
+                           FontFamily="{StaticResource FontBarlow}"
+                           FontSize="12"
+                           Foreground="{StaticResource AccentGoldLight}"
+                           HorizontalAlignment="Center"/>
             </Border>
 
             <!-- DataGrid -->
-            <DataGrid Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False"
-                      Background="{StaticResource BgPrimary}" BorderBrush="{StaticResource BorderDefault}"
-                      BorderThickness="1" Foreground="{StaticResource TextPrimary}"
-                      GridLinesVisibility="Horizontal" HeadersVisibility="Column"
+            <DataGrid Grid.Row="2"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      Background="{StaticResource BgStatCard}"
+                      BorderBrush="{StaticResource BorderDefault}"
+                      BorderThickness="1"
+                      Foreground="{StaticResource TextPrimary}"
+                      RowBackground="{StaticResource BgStatCard}"
+                      AlternatingRowBackground="{StaticResource BgSurface}"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
                       HorizontalGridLinesBrush="{StaticResource BorderDefault}"
-                      CanUserResizeRows="False" CanUserSortColumns="True"
-                      SelectionMode="Extended" SelectionUnit="FullRow">
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="True"
+                      SelectionMode="Extended"
+                      SelectionUnit="FullRow">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Padding" Value="12"/>
+                        <Setter Property="Padding" Value="14 10"/>
+                        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
+                        <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="DataGridCell">
@@ -51,7 +68,7 @@
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter/>
+                                        <ContentPresenter VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -60,6 +77,7 @@
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="BorderThickness" Value="3 0 0 0"/>
                                 <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                <Setter Property="Background" Value="{StaticResource BgNavActive}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -67,26 +85,33 @@
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-                        <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="{StaticResource AccentGold}"/>
+                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
+                        <Setter Property="FontWeight" Value="Medium"/>
                         <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="Padding" Value="12 8"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
-                        <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                        <Setter Property="Padding" Value="14 10"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                        <Setter Property="BorderThickness" Value="0 0 0 1"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="FILE" Binding="{Binding FileName}" Width="*"/>
-                    <DataGridTextColumn Header="HASH" Binding="{Binding Hash}" Width="200"/>
-                    <DataGridTextColumn Header="DETECTION" Binding="{Binding DetectionReason}" Width="150"/>
-                    <DataGridTextColumn Header="TIMESTAMP" Binding="{Binding Timestamp}" Width="150"/>
+                    <DataGridTextColumn Header="FILE"        Binding="{Binding FileName}"         Width="*"/>
+                    <DataGridTextColumn Header="HASH"        Binding="{Binding Hash}"             Width="220"/>
+                    <DataGridTextColumn Header="DETECTION"   Binding="{Binding DetectionReason}"  Width="170"/>
+                    <DataGridTextColumn Header="TIMESTAMP"   Binding="{Binding Timestamp}"        Width="170"/>
                 </DataGrid.Columns>
             </DataGrid>
 
             <!-- Bottom actions -->
-            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0 16 0 0" HorizontalAlignment="Right">
-                <Button Content="Release Selected" Style="{StaticResource SecondaryButton}" Margin="0 0 8 0"/>
-                <Button Content="Delete Permanently" Style="{StaticResource DangerButton}"/>
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        Margin="0 18 0 0"
+                        HorizontalAlignment="Right">
+                <Button Content="Release Selected"
+                        Style="{StaticResource SecondaryButton}"
+                        Margin="0 0 10 0"/>
+                <Button Content="Delete Permanently"
+                        Style="{StaticResource DangerButton}"/>
             </StackPanel>
         </Grid>
     </ScrollViewer>

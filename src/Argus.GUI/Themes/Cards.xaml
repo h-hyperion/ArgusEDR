@@ -4,79 +4,195 @@
         <ResourceDictionary Source="ArgusTheme.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <!-- ============================================================ -->
-    <!-- Stat Card (dashboard stat blocks)                                  -->
-    <!-- ============================================================ -->
-    <Style x:Key="StatCard" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="20"/>
+    <!-- ================================================================ -->
+    <!--  ARGUS EDR — IMPERIAL CREST CARDS                                   -->
+    <!--  Stat-card variants A–F + general panel + banner styles.            -->
+    <!-- ================================================================ -->
+
+    <!-- ================================================================ -->
+    <!--  Stat card text styles (used by all variants)                      -->
+    <!-- ================================================================ -->
+    <Style x:Key="StatLabel" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentGold}"/>
     </Style>
 
-    <!-- ============================================================ -->
-    <!-- Content Card (general purpose panel)                              -->
-    <!-- ============================================================ -->
+    <Style x:Key="StatValue" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontCinzel}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+        <Setter Property="Margin" Value="0 8 0 0"/>
+    </Style>
+
+    <Style x:Key="StatValueGold" TargetType="TextBlock" BasedOn="{StaticResource StatValue}">
+        <Setter Property="Foreground" Value="{StaticResource AccentGoldLight}"/>
+    </Style>
+
+    <Style x:Key="StatValueCritical" TargetType="TextBlock" BasedOn="{StaticResource StatValue}">
+        <Setter Property="Foreground" Value="{StaticResource AccentRedCritical}"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#FFE83D55" BlurRadius="20" ShadowDepth="0" Opacity="0.5"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="StatValueGreen" TargetType="TextBlock" BasedOn="{StaticResource StatValue}">
+        <Setter Property="Foreground" Value="{StaticResource StatusGreen}"/>
+    </Style>
+
+    <Style x:Key="StatFootText" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+        <Setter Property="Margin" Value="0 12 0 0"/>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!--  StatCard — base style (Variant A: chevron corner accent)           -->
+    <!--  Kept under the legacy "StatCard" key so existing views inherit.   -->
+    <!-- ================================================================ -->
+    <Style x:Key="StatCard" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BgStatCard}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="24 22"/>
+    </Style>
+
+    <!-- Variant B: double hairline frame -->
+    <Style x:Key="StatCardB" TargetType="Border" BasedOn="{StaticResource StatCard}">
+        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
+
+    <!-- Variant C: ornate critical (oxblood + crimson border) -->
+    <Style x:Key="StatCardCritical" TargetType="Border" BasedOn="{StaticResource StatCard}">
+        <Setter Property="Background" Value="{StaticResource BgStatCardCritical}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AccentRed}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <!-- Variant D: fluted column side stripe -->
+    <Style x:Key="StatCardFluted" TargetType="Border" BasedOn="{StaticResource StatCard}">
+        <Setter Property="Padding" Value="38 22 24 22"/>
+    </Style>
+
+    <!-- Variant E: centered crest -->
+    <Style x:Key="StatCardCrest" TargetType="Border" BasedOn="{StaticResource StatCard}">
+        <Setter Property="Padding" Value="22 24"/>
+    </Style>
+
+    <!-- Variant F: diagonal deco -->
+    <Style x:Key="StatCardDiagonal" TargetType="Border" BasedOn="{StaticResource StatCard}">
+        <Setter Property="Background" Value="{StaticResource BgStatCardDiagonal}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderStrong}"/>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!--  Generic content panel                                              -->
+    <!-- ================================================================ -->
     <Style x:Key="ContentCard" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource BgSurface}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="12"/>
-        <Setter Property="Padding" Value="24"/>
+        <Setter Property="Padding" Value="28"/>
     </Style>
 
-    <!-- ============================================================ -->
-    <!-- Status Badge (pill - 8px radius)                                    -->
-    <!-- ============================================================ -->
-    <ControlTemplate x:Key="BadgeGreen" TargetType="Border">
-        <Border Background="{StaticResource BgBadgeGreen}" CornerRadius="12" Padding="8 4">
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Width="8" Height="8" Fill="{StaticResource StatusGreen}"
-                         VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <ContentPresenter TextElement.Foreground="{StaticResource TextBadgeGreen}"
-                                  VerticalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-    </ControlTemplate>
+    <!-- Featured panel — gold top/bottom, crimson glow corner -->
+    <Style x:Key="FeaturePanel" TargetType="Border" BasedOn="{StaticResource ContentCard}">
+        <Setter Property="Background" Value="{StaticResource BgPanelFeature}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+        <Setter Property="BorderThickness" Value="0 2 0 2"/>
+    </Style>
 
-    <ControlTemplate x:Key="BadgeGold" TargetType="Border">
-        <Border Background="{StaticResource BgBadgeGold}" CornerRadius="12" Padding="8 4">
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Width="8" Height="8" Fill="{StaticResource TextBadgeGold}"
-                         VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <ContentPresenter TextElement.Foreground="{StaticResource TextBadgeGold}"
-                                  VerticalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-    </ControlTemplate>
+    <!-- ================================================================ -->
+    <!--  Crimson banner (dual-state vigilant / safe-mode)                  -->
+    <!--  Same frame; only icon/text/button swap based on state.            -->
+    <!-- ================================================================ -->
+    <Style x:Key="CrimsonBanner" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BgCrimsonBanner}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+        <Setter Property="BorderThickness" Value="0 2 0 2"/>
+        <Setter Property="Padding" Value="30 26"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#FFC2243A" BlurRadius="38" ShadowDepth="0" Opacity="0.45"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <ControlTemplate x:Key="BadgeRed" TargetType="Border">
-        <Border Background="{StaticResource BgBadgeRed}" CornerRadius="12" Padding="8 4">
-            <StackPanel Orientation="Horizontal">
-                <Ellipse Width="8" Height="8" Fill="{StaticResource TextBadgeRed}"
-                         VerticalAlignment="Center" Margin="0 0 6 0"/>
-                <ContentPresenter TextElement.Foreground="{StaticResource TextBadgeRed}"
-                                  VerticalAlignment="Center"/>
-            </StackPanel>
-        </Border>
-    </ControlTemplate>
+    <!-- Diamond flank — square rotated 45° flush against banner edge -->
+    <Style x:Key="BannerDiamond" TargetType="Rectangle">
+        <Setter Property="Width" Value="14"/>
+        <Setter Property="Height" Value="14"/>
+        <Setter Property="Fill" Value="{StaticResource AccentGold}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect Color="#FFD4AF4B" BlurRadius="10" ShadowDepth="0" Opacity="0.7"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <RotateTransform Angle="45"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
-    <ControlTemplate x:Key="BadgeGray" TargetType="Border">
-        <Border Background="{StaticResource BgBadgeGray}" CornerRadius="12" Padding="8 4">
-            <ContentPresenter TextElement.Foreground="{StaticResource TextBadgeGray}"
-                              VerticalAlignment="Center"/>
-        </Border>
-    </ControlTemplate>
+    <!-- Banner title (Cinzel "Argus is Watching" / "Safe Mode Active") -->
+    <Style x:Key="BannerTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontCinzel}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentGoldLight}"/>
+    </Style>
 
-    <!-- ============================================================ -->
-    <!-- Category Header (section divider)                                  -->
-    <!-- ============================================================ -->
+    <Style x:Key="BannerSubtitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+        <Setter Property="Margin" Value="0 4 0 0"/>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!--  Section header divider (used by Privacy Guard categories)         -->
+    <!-- ================================================================ -->
     <Style x:Key="CategoryHeader" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Segoe UI Variable"/>
-        <Setter Property="FontSize" Value="10"/>
-        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontCinzel}"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource AccentGold}"/>
+        <Setter Property="Margin" Value="0 18 0 10"/>
+    </Style>
+
+    <!-- ================================================================ -->
+    <!--  Toggle row (Privacy Guard list item)                              -->
+    <!-- ================================================================ -->
+    <Style x:Key="ToggleRow" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource BgSurface}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="22 16"/>
+        <Setter Property="Margin" Value="0 0 0 4"/>
+    </Style>
+
+    <Style x:Key="ToggleRowTitle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontCinzel}"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+    </Style>
+
+    <Style x:Key="ToggleRowSub" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
+        <Setter Property="FontSize" Value="11"/>
         <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+        <Setter Property="Margin" Value="0 4 0 0"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
     </Style>
 
 </ResourceDictionary>

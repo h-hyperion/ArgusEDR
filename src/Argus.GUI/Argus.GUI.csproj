@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\argus.ico" />
+    <Resource Include="Assets\Fonts\*.ttf" />
   </ItemGroup>
 
 </Project>

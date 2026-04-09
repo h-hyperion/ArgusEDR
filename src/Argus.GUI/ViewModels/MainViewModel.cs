@@ -14,6 +14,24 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty] private bool _isSafeMode;
     [ObservableProperty] private string _safeModeReason = string.Empty;
 
+    /// <summary>
+    /// Pretty-printed title for the topbar, derived from the current view.
+    /// Updated automatically whenever <see cref="CurrentView"/> changes.
+    /// </summary>
+    public string CurrentPageTitle => CurrentView switch
+    {
+        DashboardViewModel    => "Dashboard",
+        ScannerViewModel      => "Scanner",
+        DefenderViewModel     => "Defender",
+        PrivacyGuardViewModel => "Privacy Guard",
+        QuarantineViewModel   => "Quarantine",
+        SettingsViewModel     => "Settings",
+        _                     => "Argus EDR"
+    };
+
+    partial void OnCurrentViewChanged(ObservableObject? value) =>
+        OnPropertyChanged(nameof(CurrentPageTitle));
+
     // Status bar bindings
     public string StatusBarText => _pipeBridge.StatusMessage;
     public string PipeBridgeStatus => _pipeBridge.PipeConnected

@@ -10,37 +10,46 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Page Header -->
-            <StackPanel>
-                <TextBlock Text="Scanner" FontSize="24" FontWeight="Bold"
-                           Foreground="{StaticResource TextPrimary}"/>
-                <TextBlock Text="Deep scan and file upload analysis" FontSize="13"
-                           Foreground="{StaticResource TextMuted}" Margin="0 4 0 0"/>
-                <Border Height="1" Background="{StaticResource BorderDefault}" Margin="0 16"/>
+            <!-- Page header -->
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="SCANNER" Style="{StaticResource CinzelSectionTitle}"/>
+                <TextBlock Text="Deep scan and file upload analysis"
+                           FontFamily="{StaticResource FontBarlow}"
+                           FontSize="13"
+                           Foreground="{StaticResource TextSecondary}"
+                           Margin="0 6 0 0"/>
+                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
             </StackPanel>
 
-            <TabControl Grid.Row="1" Margin="0 8 0 0" Background="Transparent"
-                        BorderBrush="Transparent" Foreground="{StaticResource TextPrimary}">
+            <TabControl Grid.Row="1"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Foreground="{StaticResource TextPrimary}">
                 <TabControl.Resources>
                     <Style TargetType="TabItem">
                         <Setter Property="Background" Value="{StaticResource BgSurface}"/>
                         <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
-                        <Setter Property="Padding" Value="20 10"/>
+                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
+                        <Setter Property="FontSize" Value="12"/>
+                        <Setter Property="Padding" Value="22 10"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    <Border x:Name="bg"
+                                            Background="{TemplateBinding Background}"
                                             Padding="{TemplateBinding Padding}"
-                                            CornerRadius="8 8 0 0"
+                                            BorderBrush="{StaticResource BorderDefault}"
+                                            BorderThickness="1 1 1 0"
                                             Margin="0 0 4 0">
-                                        <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="bg" Property="Background" Value="{StaticResource BgElevated}"/>
+                                            <Setter TargetName="bg" Property="Background" Value="{StaticResource BgStatCard}"/>
                                             <Setter TargetName="bg" Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                            <Setter TargetName="bg" Property="BorderThickness" Value="0 2 0 0"/>
-                                            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                            <Setter TargetName="bg" Property="BorderThickness" Value="1 2 1 0"/>
+                                            <Setter Property="Foreground" Value="{StaticResource AccentGoldLight}"/>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -50,47 +59,69 @@
                 </TabControl.Resources>
 
                 <!-- Deep Scan Tab -->
-                <TabItem Header="Deep Scan">
-                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                <TabItem Header="DEEP SCAN">
+                    <Border Style="{StaticResource ContentCard}" Margin="0">
                         <StackPanel>
-                            <TextBlock Text="Scan Target" FontSize="14" FontWeight="Bold"
-                                       Foreground="{StaticResource TextPrimary}" Margin="0 0 0 12"/>
+                            <TextBlock Text="—  SCAN TARGET  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 14"/>
 
-                            <CheckBox Content="Scan user files" Foreground="{StaticResource TextSecondary}" Margin="0 0 0 8"/>
-                            <CheckBox Content="Scan system files" Foreground="{StaticResource TextSecondary}" Margin="0 0 0 8"/>
-                            <CheckBox Content="Scan registry" Foreground="{StaticResource TextSecondary}" Margin="0 0 0 8"/>
-                            <CheckBox Content="Heuristic analysis" Foreground="{StaticResource TextSecondary}" Margin="0 0 0 16"/>
+                            <CheckBox Content="Scan user files"     Margin="0 0 0 8"/>
+                            <CheckBox Content="Scan system files"   Margin="0 0 0 8"/>
+                            <CheckBox Content="Scan registry"       Margin="0 0 0 8"/>
+                            <CheckBox Content="Heuristic analysis"  Margin="0 0 0 16"/>
 
-                            <Button Content="Start Scan" Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Left" Margin="0 8"/>
+                            <Button Content="Start Scan"
+                                    Style="{StaticResource PrimaryButton}"
+                                    HorizontalAlignment="Left"
+                                    Margin="0 8"/>
 
-                            <Border Margin="0 24 0 0" Padding="16" Background="{StaticResource BgElevated}"
-                                    CornerRadius="8">
-                                <TextBlock Text="Scan results will appear here" FontSize="12"
-                                           Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center"/>
+                            <Border Margin="0 24 0 0"
+                                    Padding="20"
+                                    Background="{StaticResource BgStatCard}"
+                                    BorderBrush="{StaticResource BorderDefault}"
+                                    BorderThickness="1">
+                                <TextBlock Text="Scan results will appear here"
+                                           FontFamily="{StaticResource FontBarlow}"
+                                           FontSize="12"
+                                           Foreground="{StaticResource TextMuted}"
+                                           HorizontalAlignment="Center"/>
                             </Border>
                         </StackPanel>
                     </Border>
                 </TabItem>
 
                 <!-- Upload Tab -->
-                <TabItem Header="Upload">
-                    <Border Style="{StaticResource ContentCard}" Margin="0" BorderThickness="0">
+                <TabItem Header="UPLOAD">
+                    <Border Style="{StaticResource ContentCard}" Margin="0">
                         <StackPanel>
-                            <Border BorderBrush="{StaticResource AccentGold}" BorderThickness="2"
-                                    CornerRadius="12" Padding="40" Margin="0 0 0 16"
-                                    Background="{StaticResource BgElevated}">
+                            <Border BorderBrush="{StaticResource AccentGold}"
+                                    BorderThickness="2"
+                                    Padding="40"
+                                    Margin="0 0 0 16"
+                                    Background="{StaticResource BgStatCard}">
                                 <StackPanel HorizontalAlignment="Center">
-                                    <TextBlock Text="Drop files here" FontSize="16" FontWeight="Bold"
-                                               Foreground="{StaticResource TextPrimary}" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="or click to browse" FontSize="12"
-                                               Foreground="{StaticResource TextMuted}" Margin="0 4 0 0"
+                                    <TextBlock Text="DROP FILES HERE"
+                                               FontFamily="{StaticResource FontCinzel}"
+                                               FontSize="16"
+                                               FontWeight="SemiBold"
+                                               Foreground="{StaticResource AccentGoldLight}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Text="or click to browse"
+                                               FontFamily="{StaticResource FontBarlow}"
+                                               FontSize="12"
+                                               Foreground="{StaticResource TextMuted}"
+                                               Margin="0 6 0 0"
                                                HorizontalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
-                            <Border Padding="16" Background="{StaticResource BgElevated}" CornerRadius="8">
-                                <TextBlock Text="Uploaded files will appear here" FontSize="12"
-                                           Foreground="{StaticResource TextMuted}" HorizontalAlignment="Center"/>
+                            <Border Padding="20"
+                                    Background="{StaticResource BgStatCard}"
+                                    BorderBrush="{StaticResource BorderDefault}"
+                                    BorderThickness="1">
+                                <TextBlock Text="Uploaded files will appear here"
+                                           FontFamily="{StaticResource FontBarlow}"
+                                           FontSize="12"
+                                           Foreground="{StaticResource TextMuted}"
+                                           HorizontalAlignment="Center"/>
                             </Border>
                         </StackPanel>
                     </Border>

@@ -1,62 +1,178 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- ============================================================ -->
-    <!-- Background Colors                                              -->
-    <!-- ============================================================ -->
-    <SolidColorBrush x:Key="BgPrimary" Color="#0D0D0D"/>
-    <SolidColorBrush x:Key="BgSurface" Color="#151515"/>
-    <SolidColorBrush x:Key="BgElevated" Color="#1A1A1A"/>
-    <SolidColorBrush x:Key="BgSidebar" Color="#0A0A0A"/>
-    <SolidColorBrush x:Key="BgNavActive" Color="#151515"/>
-    <SolidColorBrush x:Key="BgNavHover" Color="#FFFFFF0D"/>
-    <SolidColorBrush x:Key="BgBadgeGreen" Color="#1A3320"/>
-    <SolidColorBrush x:Key="BgBadgeGold" Color="#332A00"/>
-    <SolidColorBrush x:Key="BgBadgeRed" Color="#331010"/>
-    <SolidColorBrush x:Key="BgBadgeGray" Color="#1A1A1A"/>
+    <!-- ================================================================ -->
+    <!--  ARGUS EDR — IMPERIAL CREST THEME                                 -->
+    <!--  Crimson / gold / oxblood art-deco palette.                       -->
+    <!--  All resource keys used across the existing Views are preserved  -->
+    <!--  so views inherit the new look with no binding changes.          -->
+    <!-- ================================================================ -->
 
-    <!-- ============================================================ -->
-    <!-- Accent Colors                                                  -->
-    <!-- ============================================================ -->
-    <SolidColorBrush x:Key="AccentGold" Color="#D4AF37"/>
-    <SolidColorBrush x:Key="AccentGoldHover" Color="#C6A02D"/>
-    <SolidColorBrush x:Key="AccentGoldPressed" Color="#B8941F"/>
-    <SolidColorBrush x:Key="AccentGoldDim" Color="#8B7421"/>
-    <SolidColorBrush x:Key="AccentRed" Color="#C41E1E"/>
-    <SolidColorBrush x:Key="AccentRedHover" Color="#A01A1A"/>
-    <SolidColorBrush x:Key="AccentRedCritical" Color="#FF4444"/>
+    <!-- ================================================================ -->
+    <!--  Font families (static TTFs bundled under Assets/Fonts/)          -->
+    <!-- ================================================================ -->
+    <FontFamily x:Key="FontCinzel">pack://application:,,,/Argus.GUI;component/Assets/Fonts/#Cinzel</FontFamily>
+    <FontFamily x:Key="FontBarlow">pack://application:,,,/Argus.GUI;component/Assets/Fonts/#Barlow</FontFamily>
+    <FontFamily x:Key="FontBarlowCondensed">pack://application:,,,/Argus.GUI;component/Assets/Fonts/#Barlow Condensed</FontFamily>
 
-    <!-- ============================================================ -->
-    <!-- Status Colors                                                  -->
-    <!-- ============================================================ -->
-    <SolidColorBrush x:Key="StatusGreen" Color="#2ECC71"/>
-    <SolidColorBrush x:Key="StatusGreenDim" Color="#6EE7B7"/>
+    <!-- ================================================================ -->
+    <!--  Core colors                                                       -->
+    <!-- ================================================================ -->
+    <Color x:Key="ClrBgPrimary">#FF0A0404</Color>
+    <Color x:Key="ClrBgSurface">#FF180808</Color>
+    <Color x:Key="ClrBgElevated">#FF1E0A0A</Color>
+    <Color x:Key="ClrBgSidebar">#FF0A0303</Color>
+    <Color x:Key="ClrOxblood">#FF3A0A0E</Color>
+    <Color x:Key="ClrOxbloodDeep">#FF220508</Color>
+    <Color x:Key="ClrGold">#FFD4AF4B</Color>
+    <Color x:Key="ClrGoldLight">#FFF0D47C</Color>
+    <Color x:Key="ClrGoldDark">#FF8A6A1F</Color>
+    <Color x:Key="ClrCrimson">#FFC2243A</Color>
+    <Color x:Key="ClrCrimsonHot">#FFE83D55</Color>
+    <Color x:Key="ClrInk">#FFF6ECD4</Color>
+    <Color x:Key="ClrInkDim">#FFB7AB89</Color>
+    <Color x:Key="ClrInkMuted">#FF6B5F45</Color>
 
-    <!-- ============================================================ -->
-    <!-- Border Colors                                                  -->
-    <!-- ============================================================ -->
-    <SolidColorBrush x:Key="BorderDefault" Color="#2A2A2A"/>
-    <SolidColorBrush x:Key="BorderHover" Color="#3A3A3A"/>
-    <SolidColorBrush x:Key="BorderFocus" Color="#D4AF37"/>
-    <SolidColorBrush x:Key="BorderError" Color="#C41E1E"/>
+    <!-- ================================================================ -->
+    <!--  Background brushes                                                -->
+    <!-- ================================================================ -->
+    <SolidColorBrush x:Key="BgPrimary"     Color="{StaticResource ClrBgPrimary}"/>
+    <SolidColorBrush x:Key="BgSurface"     Color="{StaticResource ClrBgSurface}"/>
+    <SolidColorBrush x:Key="BgElevated"    Color="{StaticResource ClrBgElevated}"/>
+    <SolidColorBrush x:Key="BgSidebar"     Color="{StaticResource ClrBgSidebar}"/>
+    <SolidColorBrush x:Key="BgNavActive"   Color="#FF1E0A0A"/>
+    <SolidColorBrush x:Key="BgNavHover"    Color="#1FD4AF4B"/>
+    <SolidColorBrush x:Key="BgOxblood"     Color="{StaticResource ClrOxblood}"/>
+    <SolidColorBrush x:Key="BgOxbloodDeep" Color="{StaticResource ClrOxbloodDeep}"/>
 
-    <!-- ============================================================ -->
-    <!-- Text Colors                                                    -->
-    <!-- ============================================================ -->
-    <SolidColorBrush x:Key="TextPrimary" Color="#E8E8E8"/>
-    <SolidColorBrush x:Key="TextSecondary" Color="#A0A0A0"/>
-    <SolidColorBrush x:Key="TextMuted" Color="#666666"/>
-    <SolidColorBrush x:Key="TextInverse" Color="#0D0D0D"/>
-    <SolidColorBrush x:Key="TextBadgeGreen" Color="#2ECC71"/>
-    <SolidColorBrush x:Key="TextBadgeGold" Color="#D4AF37"/>
-    <SolidColorBrush x:Key="TextBadgeRed" Color="#FF4444"/>
-    <SolidColorBrush x:Key="TextBadgeGray" Color="#666666"/>
+    <!-- Badge backgrounds (dim, deco-tinted versions) -->
+    <SolidColorBrush x:Key="BgBadgeGreen" Color="#FF0F2814"/>
+    <SolidColorBrush x:Key="BgBadgeGold"  Color="#FF2A2208"/>
+    <SolidColorBrush x:Key="BgBadgeRed"   Color="#FF2A080C"/>
+    <SolidColorBrush x:Key="BgBadgeGray"  Color="#FF1A1010"/>
 
-    <!-- ============================================================ -->
-    <!-- Scrollbar Colors                                               -->
-    <!-- ============================================================ -->
-    <SolidColorBrush x:Key="ScrollbarTrack" Color="#0D0D0D"/>
-    <SolidColorBrush x:Key="ScrollbarThumb" Color="#2A2A2A"/>
-    <SolidColorBrush x:Key="ScrollbarThumbHover" Color="#3A3A3A"/>
+    <!-- ================================================================ -->
+    <!--  Accent brushes (gold + crimson)                                   -->
+    <!-- ================================================================ -->
+    <SolidColorBrush x:Key="AccentGold"         Color="{StaticResource ClrGold}"/>
+    <SolidColorBrush x:Key="AccentGoldLight"    Color="{StaticResource ClrGoldLight}"/>
+    <SolidColorBrush x:Key="AccentGoldHover"    Color="#FFE8C96A"/>
+    <SolidColorBrush x:Key="AccentGoldPressed"  Color="#FFA07A25"/>
+    <SolidColorBrush x:Key="AccentGoldDim"      Color="{StaticResource ClrGoldDark}"/>
+    <SolidColorBrush x:Key="AccentRed"          Color="{StaticResource ClrCrimson}"/>
+    <SolidColorBrush x:Key="AccentRedHover"     Color="#FFD93048"/>
+    <SolidColorBrush x:Key="AccentRedCritical"  Color="{StaticResource ClrCrimsonHot}"/>
+
+    <!-- ================================================================ -->
+    <!--  Status                                                            -->
+    <!-- ================================================================ -->
+    <SolidColorBrush x:Key="StatusGreen"     Color="#FF6FD185"/>
+    <SolidColorBrush x:Key="StatusGreenDim"  Color="#FF3E8E4F"/>
+
+    <!-- ================================================================ -->
+    <!--  Borders (faint gold hairlines)                                    -->
+    <!-- ================================================================ -->
+    <SolidColorBrush x:Key="BorderDefault" Color="#2ED4AF4B"/>
+    <SolidColorBrush x:Key="BorderHover"   Color="#66D4AF4B"/>
+    <SolidColorBrush x:Key="BorderFocus"   Color="{StaticResource ClrGold}"/>
+    <SolidColorBrush x:Key="BorderError"   Color="{StaticResource ClrCrimson}"/>
+    <SolidColorBrush x:Key="BorderStrong"  Color="#99D4AF4B"/>
+
+    <!-- ================================================================ -->
+    <!--  Text (warm ivory ink)                                             -->
+    <!-- ================================================================ -->
+    <SolidColorBrush x:Key="TextPrimary"    Color="{StaticResource ClrInk}"/>
+    <SolidColorBrush x:Key="TextSecondary"  Color="{StaticResource ClrInkDim}"/>
+    <SolidColorBrush x:Key="TextMuted"      Color="{StaticResource ClrInkMuted}"/>
+    <SolidColorBrush x:Key="TextInverse"    Color="#FF1A0505"/>
+    <SolidColorBrush x:Key="TextGold"       Color="{StaticResource ClrGoldLight}"/>
+
+    <!-- Badge text -->
+    <SolidColorBrush x:Key="TextBadgeGreen" Color="#FF6FD185"/>
+    <SolidColorBrush x:Key="TextBadgeGold"  Color="{StaticResource ClrGoldLight}"/>
+    <SolidColorBrush x:Key="TextBadgeRed"   Color="{StaticResource ClrCrimsonHot}"/>
+    <SolidColorBrush x:Key="TextBadgeGray"  Color="{StaticResource ClrInkDim}"/>
+
+    <!-- ================================================================ -->
+    <!--  Decorative gradient brushes                                       -->
+    <!-- ================================================================ -->
+
+    <!-- Sidebar vertical gradient (deep brand stage) -->
+    <LinearGradientBrush x:Key="BgSidebarGradient" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF120606" Offset="0"/>
+        <GradientStop Color="#FF080303" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Brand header gradient behind the ARGUS wordmark -->
+    <LinearGradientBrush x:Key="BgBrandHeader" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF22070A" Offset="0"/>
+        <GradientStop Color="#FF120505" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Crimson banner wash for "Argus is Watching" / Safe Mode -->
+    <LinearGradientBrush x:Key="BgCrimsonBanner" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF280609" Offset="0"/>
+        <GradientStop Color="#FF140305" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Gold brass button fill -->
+    <LinearGradientBrush x:Key="BgGoldBrass" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFE8C96A" Offset="0"/>
+        <GradientStop Color="#FFC29A2A" Offset="0.5"/>
+        <GradientStop Color="#FF8A6A1F" Offset="1"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="BgGoldBrassHover" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FFF0D47C" Offset="0"/>
+        <GradientStop Color="#FFD4AF4B" Offset="0.5"/>
+        <GradientStop Color="#FFA07A25" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Stat card base — warm dark panel -->
+    <LinearGradientBrush x:Key="BgStatCard" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF180808" Offset="0"/>
+        <GradientStop Color="#FF100606" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Panel-feature gradient (top band of crimson glow) -->
+    <LinearGradientBrush x:Key="BgPanelFeature" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF1E0A0A" Offset="0"/>
+        <GradientStop Color="#FF180808" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Horizontal gold rule — for brand top/bottom rules -->
+    <LinearGradientBrush x:Key="GoldRule" StartPoint="0,0" EndPoint="1,0">
+        <GradientStop Color="#00D4AF4B" Offset="0"/>
+        <GradientStop Color="#FFD4AF4B" Offset="0.5"/>
+        <GradientStop Color="#00D4AF4B" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Vertical gold rule — used for sidebar right edge -->
+    <LinearGradientBrush x:Key="GoldRuleVertical" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#00D4AF4B" Offset="0"/>
+        <GradientStop Color="#4CD4AF4B" Offset="0.2"/>
+        <GradientStop Color="#4CD4AF4B" Offset="0.8"/>
+        <GradientStop Color="#00D4AF4B" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Stat card crimson critical (for the "Critical Threats" variant) -->
+    <LinearGradientBrush x:Key="BgStatCardCritical" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#FF22070A" Offset="0"/>
+        <GradientStop Color="#FF0C0305" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- Stat card diagonal (variant F) -->
+    <LinearGradientBrush x:Key="BgStatCardDiagonal" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Color="#FF180808" Offset="0"/>
+        <GradientStop Color="#FF180808" Offset="0.55"/>
+        <GradientStop Color="#FF3A0A0E" Offset="0.55"/>
+        <GradientStop Color="#FF220508" Offset="1"/>
+    </LinearGradientBrush>
+
+    <!-- ================================================================ -->
+    <!--  Drop-shadows                                                       -->
+    <!-- ================================================================ -->
+    <DropShadowEffect x:Key="ShadowGoldGlow"    Color="#FFD4AF4B" BlurRadius="24" ShadowDepth="0" Opacity="0.45"/>
+    <DropShadowEffect x:Key="ShadowCrimsonGlow" Color="#FFC2243A" BlurRadius="48" ShadowDepth="0" Opacity="0.5"/>
+    <DropShadowEffect x:Key="ShadowSoftDrop"    Color="#FF000000" BlurRadius="12" ShadowDepth="2" Opacity="0.6"/>
 
 </ResourceDictionary>

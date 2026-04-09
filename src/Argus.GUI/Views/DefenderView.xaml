@@ -11,43 +11,72 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Page Header -->
-            <StackPanel>
-                <TextBlock Text="Defender" FontSize="24" FontWeight="Bold"
-                           Foreground="{StaticResource TextPrimary}"/>
-                <TextBlock Text="Real-time protection activity log" FontSize="13"
-                           Foreground="{StaticResource TextMuted}" Margin="0 4 0 0"/>
-                <Border Height="1" Background="{StaticResource BorderDefault}" Margin="0 16"/>
+            <!-- Page header -->
+            <StackPanel Grid.Row="0">
+                <TextBlock Text="DEFENDER" Style="{StaticResource CinzelSectionTitle}"/>
+                <TextBlock Text="Real-time protection activity log"
+                           FontFamily="{StaticResource FontBarlow}"
+                           FontSize="13"
+                           Foreground="{StaticResource TextSecondary}"
+                           Margin="0 6 0 0"/>
+                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
             </StackPanel>
 
             <!-- Filter pills -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 0 0 8">
-                <Border Background="{StaticResource BgBadgeGreen}" CornerRadius="12" Padding="10 4" Margin="0 0 8 0">
-                    <TextBlock Text="All" FontSize="11" Foreground="{StaticResource TextBadgeGreen}"/>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 0 0 12">
+                <Border Background="{StaticResource BgBadgeGreen}" Padding="12 5" Margin="0 0 8 0">
+                    <TextBlock Text="ALL"
+                               FontFamily="{StaticResource FontBarlowCondensed}"
+                               FontSize="11"
+                               FontWeight="Medium"
+                               Foreground="{StaticResource TextBadgeGreen}"/>
                 </Border>
-                <Border Background="{StaticResource BgBadgeRed}" CornerRadius="12" Padding="10 4" Margin="0 0 8 0">
-                    <TextBlock Text="Malicious" FontSize="11" Foreground="{StaticResource TextBadgeRed}"/>
+                <Border Background="{StaticResource BgBadgeRed}" Padding="12 5" Margin="0 0 8 0">
+                    <TextBlock Text="MALICIOUS"
+                               FontFamily="{StaticResource FontBarlowCondensed}"
+                               FontSize="11"
+                               FontWeight="Medium"
+                               Foreground="{StaticResource TextBadgeRed}"/>
                 </Border>
-                <Border Background="{StaticResource BgBadgeGold}" CornerRadius="12" Padding="10 4" Margin="0 0 8 0">
-                    <TextBlock Text="Suspicious" FontSize="11" Foreground="{StaticResource TextBadgeGold}"/>
+                <Border Background="{StaticResource BgBadgeGold}" Padding="12 5" Margin="0 0 8 0">
+                    <TextBlock Text="SUSPICIOUS"
+                               FontFamily="{StaticResource FontBarlowCondensed}"
+                               FontSize="11"
+                               FontWeight="Medium"
+                               Foreground="{StaticResource TextBadgeGold}"/>
                 </Border>
-                <Border Background="{StaticResource BgBadgeGray}" CornerRadius="12" Padding="10 4" Margin="0 0 8 0">
-                    <TextBlock Text="Clean" FontSize="11" Foreground="{StaticResource TextBadgeGray}"/>
+                <Border Background="{StaticResource BgBadgeGray}" Padding="12 5">
+                    <TextBlock Text="CLEAN"
+                               FontFamily="{StaticResource FontBarlowCondensed}"
+                               FontSize="11"
+                               FontWeight="Medium"
+                               Foreground="{StaticResource TextBadgeGray}"/>
                 </Border>
             </StackPanel>
 
             <!-- Activity DataGrid -->
-            <DataGrid Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False"
-                      Background="{StaticResource BgPrimary}" BorderBrush="{StaticResource BorderDefault}"
-                      BorderThickness="1" Foreground="{StaticResource TextPrimary}"
-                      GridLinesVisibility="Horizontal" HeadersVisibility="Column"
+            <DataGrid Grid.Row="2"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      Background="{StaticResource BgStatCard}"
+                      BorderBrush="{StaticResource BorderDefault}"
+                      BorderThickness="1"
+                      Foreground="{StaticResource TextPrimary}"
+                      RowBackground="{StaticResource BgStatCard}"
+                      AlternatingRowBackground="{StaticResource BgSurface}"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column"
                       HorizontalGridLinesBrush="{StaticResource BorderDefault}"
-                      CanUserResizeRows="False" CanUserSortColumns="True"
-                      SelectionMode="Single" SelectionUnit="FullRow">
+                      CanUserResizeRows="False"
+                      CanUserSortColumns="True"
+                      SelectionMode="Single"
+                      SelectionUnit="FullRow">
                 <DataGrid.CellStyle>
                     <Style TargetType="DataGridCell">
                         <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Padding" Value="12"/>
+                        <Setter Property="Padding" Value="14 10"/>
+                        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
+                        <Setter Property="FontSize" Value="12"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="DataGridCell">
@@ -55,7 +84,7 @@
                                             Background="{TemplateBinding Background}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter/>
+                                        <ContentPresenter VerticalAlignment="Center"/>
                                     </Border>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -64,6 +93,7 @@
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="BorderThickness" Value="3 0 0 0"/>
                                 <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                                <Setter Property="Background" Value="{StaticResource BgNavActive}"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -71,19 +101,20 @@
                 <DataGrid.ColumnHeaderStyle>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-                        <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
-                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="{StaticResource AccentGold}"/>
+                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
+                        <Setter Property="FontWeight" Value="Medium"/>
                         <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="Padding" Value="12 8"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
-                        <Setter Property="BorderThickness" Value="0 0 1 1"/>
+                        <Setter Property="Padding" Value="14 10"/>
+                        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
+                        <Setter Property="BorderThickness" Value="0 0 0 1"/>
                     </Style>
                 </DataGrid.ColumnHeaderStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="TIME" Binding="{Binding Time}" Width="120"/>
-                    <DataGridTextColumn Header="TYPE" Binding="{Binding Type}" Width="100"/>
-                    <DataGridTextColumn Header="EVENT" Binding="{Binding Event}" Width="*"/>
-                    <DataGridTextColumn Header="THREAT LEVEL" Binding="{Binding ThreatLevel}" Width="120"/>
+                    <DataGridTextColumn Header="TIME"          Binding="{Binding Time}"        Width="120"/>
+                    <DataGridTextColumn Header="TYPE"          Binding="{Binding Type}"        Width="120"/>
+                    <DataGridTextColumn Header="EVENT"         Binding="{Binding Event}"       Width="*"/>
+                    <DataGridTextColumn Header="THREAT LEVEL"  Binding="{Binding ThreatLevel}" Width="140"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
