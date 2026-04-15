@@ -82,20 +82,10 @@ function Get-ArgusMode {
 }
 
 # === Prerequisites ===
+# Argus ships self-contained: the Watchdog and GUI exes bundle the .NET 8 runtime.
+# No runtime probe is needed. Kept as a stub so callers don't have to change.
 function Test-DotNetRuntime {
-    $dotnets = dotnet --list-runtimes 2>$null | Where-Object { $_ -match "Microsoft\.NETCore\.App 8\." }
-    if ($dotnets) {
-        Write-Msg ".NET 8 runtime detected" "SUCCESS"
-        return $true
-    }
-    Write-Msg ".NET 8 runtime not found - installing..." "WARNING"
-    try {
-        winget install --id Microsoft.DotNet.Runtime.8 --source winget --silent --accept-package-agreements 2>$null
-        return $true
-    } catch {
-        Write-Msg "Failed to auto-install .NET. Please install .NET 8 manually." "ERROR"
-        return $false
-    }
+    return $true
 }
 
 # === GitHub Release Download ===
