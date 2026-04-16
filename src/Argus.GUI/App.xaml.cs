@@ -14,6 +14,7 @@ namespace Argus.GUI;
 public partial class App : Application
 {
     private GuiPipeBridge? _pipeBridge;
+    private DefenderPipeBridge? _defenderBridge;
     private TrayIconManager? _trayIcon;
     private NotificationService? _notifications;
     private bool _startMinimized;
@@ -40,13 +41,14 @@ public partial class App : Application
         ToastNotificationManagerCompat.OnActivated += OnToastActivated;
 
         _pipeBridge = new GuiPipeBridge();
+        _defenderBridge = new DefenderPipeBridge();
 
         var dnsService = new DnsProtectionService(new WindowsDnsNativeApi());
         var guardEnforcer = new GuardEnforcer(new WindowsPrivacyApi());
 
-        var dashboard = new DashboardViewModel(_pipeBridge);
+        var dashboard = new DashboardViewModel(_pipeBridge, _defenderBridge);
         var scanner = new ScannerViewModel();
-        var defender = new DefenderViewModel();
+        var defender = new DefenderViewModel(_defenderBridge);
         var privacyGuard = new PrivacyGuardViewModel(guardEnforcer);
         var quarantine = new QuarantineViewModel();
         var settings = new SettingsViewModel(dnsService);
@@ -139,6 +141,7 @@ public partial class App : Application
     {
         _notifications?.Dispose();
         _trayIcon?.Dispose();
+        _defenderBridge?.Dispose();
         _pipeBridge?.Dispose();
         Log.CloseAndFlush();
         base.OnExit(e);
