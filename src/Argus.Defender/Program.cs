@@ -2,6 +2,7 @@ using Argus.Core;
 using Argus.Defender.Dns;
 using Argus.Defender.Guard;
 using Argus.Defender.Hosting;
+using Argus.Defender.IPC;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -40,7 +41,7 @@ try
             // ── Registry ────────────────────────────────────────────────
             services.AddSingleton<MonitorRegistry>();
 
-            // TODO(task 6): services.AddHostedService<DefenderPipeServer>();
+            services.AddHostedService<DefenderPipeServer>();
             // TODO(task 11): services.AddHostedService<HeartbeatEmitter>();
         })
         .Build();
