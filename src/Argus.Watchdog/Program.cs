@@ -1,7 +1,9 @@
 using System.Security.Cryptography;
 using Argus.Core;
+using Argus.Core.Supervision;
 using Argus.Watchdog;
 using Argus.Watchdog.IPC;
+using Argus.Watchdog.Supervision;
 using Serilog;
 
 // Logging
@@ -38,6 +40,19 @@ try
             services.AddSingleton(hmacKey);
             services.AddSingleton(new WatchdogPipeServer(hmacKey));
             services.AddHostedService<WatchdogService>();
+
+            // Supervisor: manages Argus.Defender child process
+            services.AddSingleton<ManifestVerifier>();
+            services.AddSingleton<SafeModeController>();
+            services.AddSingleton<IEnumerable<ChildProcessDescriptor>>(
+                _ => new[]
+                {
+                    new ChildProcessDescriptor(
+                        Name:    "Defender",
+                        ExePath: Path.Combine(ArgusConstants.InstallDir, "Argus.Defender.exe"),
+                        Args:    Array.Empty<string>()),
+                });
+            services.AddHostedService<SupervisorService>();
         })
         .Build();
 

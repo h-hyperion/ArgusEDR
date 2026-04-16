@@ -167,16 +167,20 @@ public sealed class ManagedChildProcess : IAsyncDisposable
 
         await _cts.CancelAsync().ConfigureAwait(false);
 
-        _process?.RequestGracefulStop();
+        // Snapshot the field to avoid a TOCTOU race: the supervision loop
+        // runs concurrently and may null _process between the null-guard and
+        // the subsequent method call.
+        var snapshot = _process;
+        snapshot?.RequestGracefulStop();
 
-        if (_process is not null)
+        if (snapshot is not null)
         {
-            var exited = await _process.WaitForExitAsync(gracePeriod, CancellationToken.None)
+            var exited = await snapshot.WaitForExitAsync(gracePeriod, CancellationToken.None)
                 .ConfigureAwait(false);
             if (!exited)
             {
                 _log.LogWarning("[{Name}] Grace period elapsed; force-killing.", _descriptor.Name);
-                _process.Kill();
+                snapshot.Kill();
             }
         }
 

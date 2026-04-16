@@ -15,5 +15,6 @@
     <Project Path="tests/Argus.Recovery.Tests/Argus.Recovery.Tests.csproj" />
     <Project Path="tests/Argus.Scanner.Tests/Argus.Scanner.Tests.csproj" />
     <Project Path="tests/Argus.Watchdog.Tests/Argus.Watchdog.Tests.csproj" />
+    <Project Path="tests/StubChild/StubChild.csproj" />
   </Folder>
 </Solution>
