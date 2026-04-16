@@ -33,6 +33,9 @@ try
             RegisterMonitorHost<EtwMonitorHost>(services);
             RegisterMonitorHost<GuardMonitorHost>(services);
             RegisterMonitorHost<DnsMonitorHost>(services);
+            RegisterMonitorHost<AmsiMonitorHost>(services);
+            RegisterMonitorHost<ByovdMonitorHost>(services);
+            RegisterMonitorHost<QuarantineMaintenanceHost>(services);
 
             // ── Registry ────────────────────────────────────────────────
             services.AddSingleton<MonitorRegistry>();
