@@ -46,6 +46,10 @@ try
         })
         .Build();
 
+    // Enable all monitors that are configured as enabled before starting the host loop
+    var registry = host.Services.GetRequiredService<MonitorRegistry>();
+    await registry.InitializeAsync();
+
     await host.RunAsync();
 }
 catch (Exception ex)

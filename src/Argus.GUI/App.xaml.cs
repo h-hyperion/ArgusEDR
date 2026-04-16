@@ -105,6 +105,15 @@ public partial class App : Application
         {
             Log.Warning(ex, "Failed to connect to Watchdog service on startup");
         }
+
+        try
+        {
+            await _defenderBridge.StartAsync(CancellationToken.None);
+        }
+        catch (Exception ex)
+        {
+            Log.Warning(ex, "Failed to connect to Defender service on startup");
+        }
     }
 
     private void ParseArguments(string[] args)

@@ -53,13 +53,20 @@ public sealed partial class DashboardViewModel : ObservableObject
         var running = states.Count(s => s.Status == "Running");
         var total   = states.Count;
 
-        Application.Current?.Dispatcher.Invoke(
-            () => ActiveMonitors = $"{running}/{total}");
+        Application.Current?.Dispatcher.Invoke(() =>
+        {
+            ActiveMonitors = $"{running}/{total}";
+            DefenderStatus = running > 0 ? "Active" : "Inactive";
+            ProtectionStatus = running > 0 ? "Active" : "Inactive";
+        });
     }
 
     private void OnDefenderDisconnected()
     {
-        Application.Current?.Dispatcher.Invoke(
-            () => ActiveMonitors = "—");
+        Application.Current?.Dispatcher.Invoke(() =>
+        {
+            ActiveMonitors = "—";
+            DefenderStatus = "—";
+        });
     }
 }

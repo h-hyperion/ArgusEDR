@@ -113,6 +113,29 @@ public sealed class MonitorRegistry
     }
 
     /// <summary>
+    /// Enables all monitors whose persisted config says they should be enabled.
+    /// Call once during startup after all hosted services have been registered.
+    /// </summary>
+    public async Task InitializeAsync(CancellationToken ct = default)
+    {
+        foreach (var monitor in _monitors)
+        {
+            if (IsEnabled(monitor.Id))
+            {
+                try
+                {
+                    await monitor.EnableAsync(ct).ConfigureAwait(false);
+                    _logger.LogInformation("Monitor '{Id}' auto-enabled on startup", monitor.Id);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to auto-enable monitor '{Id}'", monitor.Id);
+                }
+            }
+        }
+    }
+
+    /// <summary>
     /// Returns a snapshot of all registered monitors' current state.
     /// </summary>
     public Task<IReadOnlyList<MonitorState>> GetAllStatesAsync(
