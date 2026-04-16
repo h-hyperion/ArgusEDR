@@ -42,7 +42,7 @@ try
             services.AddSingleton<MonitorRegistry>();
 
             services.AddHostedService<DefenderPipeServer>();
-            // TODO(task 11): services.AddHostedService<HeartbeatEmitter>();
+            services.AddHostedService<HeartbeatEmitter>();
         })
         .Build();
 
