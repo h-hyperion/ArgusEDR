@@ -1,0 +1,19 @@
+title: Registry Run Key Persistence
+id: 24357373-078f-44ed-9ff2-9863b10cae48
+status: test
+description: Detects writes to autorun registry keys used by malware for persistence
+tags:
+    - attack.persistence
+    - attack.t1547.001
+logsource:
+    category: registry_event
+    product: windows
+detection:
+    selection:
+        TargetObject|contains:
+            - \Software\Microsoft\Windows\CurrentVersion\Run\
+            - \Software\Microsoft\Windows\CurrentVersion\RunOnce\
+    condition: selection
+falsepositives:
+    - Legitimate application installers
+level: medium

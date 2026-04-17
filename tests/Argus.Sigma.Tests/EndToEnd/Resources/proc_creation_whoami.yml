@@ -1,0 +1,21 @@
+title: Whoami Execution Anomaly
+id: 2d8379ee-9589-4fbd-9646-aaa58cf8b7d7
+status: test
+description: Detects the execution of whoami which is usually used by attackers after successful command execution
+references:
+    - https://attack.mitre.org/software/S0160/
+author: Florian Roth (Nextron Systems)
+date: 2019/01/16
+tags:
+    - attack.discovery
+    - attack.t1033
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: \whoami.exe
+    condition: selection
+falsepositives:
+    - Admin activity
+level: high

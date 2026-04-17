@@ -23,4 +23,9 @@
     <Using Include="Xunit" />
     <Using Include="FluentAssertions" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="EndToEnd\Resources\*.yml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
