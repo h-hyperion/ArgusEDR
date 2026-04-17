@@ -20,7 +20,11 @@ public sealed class QuarantineMaintenanceHost : BackgroundService, IDefenderMoni
     public long          EventsEmitted => Interlocked.Read(ref _pruned);
 
     // ── Internals ────────────────────────────────────────────────────────────
+    // Reserved for when the actual prune loop lands (tracked in v2.2).
+    // Until then the counter legitimately stays at zero; suppress CS0649.
+#pragma warning disable CS0649
     private long _pruned;
+#pragma warning restore CS0649
     private readonly ILogger<QuarantineMaintenanceHost> _log;
 
     public QuarantineMaintenanceHost(ILogger<QuarantineMaintenanceHost> log)

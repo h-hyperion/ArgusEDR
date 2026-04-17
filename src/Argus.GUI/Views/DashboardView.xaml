@@ -167,12 +167,21 @@
                                 Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}"
                                 Content="Daily Briefing"
                                 Command="{Binding DataContext.ShowDailyBriefingCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
-                        <Button Grid.Column="2"
-                                Style="{StaticResource ReviewButton}"
-                                VerticalAlignment="Center"
-                                Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}"
-                                Content="Review Incident"
-                                Command="{Binding DataContext.RepairArgusCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        <StackPanel Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
+                            <Button Style="{StaticResource ReviewButton}"
+                                    Content="Review Incident"
+                                    Command="{Binding DataContext.RepairArgusCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            <TextBlock Text="{Binding DataContext.RepairStatus, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       FontFamily="{StaticResource FontBarlow}"
+                                       FontSize="11"
+                                       Foreground="{StaticResource AccentGoldLight}"
+                                       TextWrapping="Wrap"
+                                       MaxWidth="240"
+                                       Margin="0 6 0 0"
+                                       HorizontalAlignment="Right"/>
+                        </StackPanel>
                     </Grid>
                 </Border>
             </Grid>
