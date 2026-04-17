@@ -22,7 +22,7 @@
     <Style x:Key="StatValue" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource FontCinzel}"/>
         <Setter Property="FontWeight" Value="Medium"/>
-        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="FontSize" Value="44"/>
         <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
         <Setter Property="Margin" Value="0 8 0 0"/>
     </Style>
@@ -59,7 +59,7 @@
         <Setter Property="Background" Value="{StaticResource BgStatCard}"/>
         <Setter Property="BorderBrush" Value="{StaticResource BorderDefault}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Padding" Value="24 22"/>
+        <Setter Property="Padding" Value="24 28"/>
     </Style>
 
     <!-- Variant B: double hairline frame -->

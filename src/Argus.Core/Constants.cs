@@ -59,6 +59,11 @@ public static class ArgusConstants
     public static readonly TimeSpan HeartbeatTimeout          = TimeSpan.FromSeconds(10);
     public const int HeartbeatIntervalSeconds          = 5;
     public const int HeartbeatTimeoutSeconds           = 10;
+    // Cold-start allowance: DI build + BackgroundService spin-up + YARA
+    // compilation + ETW session create can push well past HeartbeatTimeoutSeconds
+    // on a slow machine. Supervisor applies this larger budget until the first
+    // heartbeat lands (State transitions Starting → Running), then tightens.
+    public const int HeartbeatStartupGraceSeconds      = 30;
     public const int MaxConsecutiveRestartFailures     = 5;
     public static readonly TimeSpan HashVerificationInterval  = TimeSpan.FromSeconds(30);
     public static readonly TimeSpan CanaryCheckInterval       = TimeSpan.FromSeconds(60);

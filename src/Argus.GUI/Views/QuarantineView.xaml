@@ -4,33 +4,42 @@
              xmlns:vm="clr-namespace:Argus.GUI.ViewModels">
 
     <ScrollViewer Style="{StaticResource DarkScrollViewer}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <StackPanel>
 
-            <!-- Page header -->
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="QUARANTINE" Style="{StaticResource CinzelSectionTitle}"/>
-                <TextBlock FontFamily="{StaticResource FontBarlow}"
-                           FontSize="13"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0 6 0 0">
-                    <Run Text="Isolated files awaiting review — "/>
-                    <Run Text="{Binding ItemCount}" Foreground="{StaticResource AccentGoldLight}" FontWeight="SemiBold"/>
-                    <Run Text=" files held in the vault."/>
-                </TextBlock>
-                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
-            </StackPanel>
+            <!-- ======================================================== -->
+            <!--  Stat cards row                                           -->
+            <!-- ======================================================== -->
+            <UniformGrid Columns="3" Margin="0 0 0 28">
+                <Border Style="{StaticResource StatCard}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  ITEMS CONTAINED"/>
+                        <TextBlock Style="{StaticResource StatValue}" Text="{Binding ItemCount}" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="AES-256-GCM encrypted"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardB}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  STORAGE USED"/>
+                        <TextBlock Style="{StaticResource StatValueGold}" Text="0 MB" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="Of 1 GB limit"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardCritical}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  OLDEST"/>
+                        <TextBlock Style="{StaticResource StatValueCritical}" Text="—" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="Auto-purge at 30d"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- ======================================================== -->
+            <!--  Quarantined Files — matching mockup activity rows        -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  QUARANTINED FILES  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
 
             <!-- Status -->
-            <Border Grid.Row="1"
-                    Style="{StaticResource ContentCard}"
-                    Margin="0 0 0 16"
-                    Padding="20 14">
+            <Border Style="{StaticResource ContentCard}" Padding="20 14" Margin="0 0 0 12">
                 <TextBlock Text="{Binding StatusMessage}"
                            FontFamily="{StaticResource FontBarlow}"
                            FontSize="12"
@@ -38,81 +47,132 @@
                            HorizontalAlignment="Center"/>
             </Border>
 
-            <!-- DataGrid -->
-            <DataGrid Grid.Row="2"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      Background="{StaticResource BgStatCard}"
-                      BorderBrush="{StaticResource BorderDefault}"
-                      BorderThickness="1"
-                      Foreground="{StaticResource TextPrimary}"
-                      RowBackground="{StaticResource BgStatCard}"
-                      AlternatingRowBackground="{StaticResource BgSurface}"
-                      GridLinesVisibility="Horizontal"
-                      HeadersVisibility="Column"
-                      HorizontalGridLinesBrush="{StaticResource BorderDefault}"
-                      CanUserResizeRows="False"
-                      CanUserSortColumns="True"
-                      SelectionMode="Extended"
-                      SelectionUnit="FullRow">
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Padding" Value="14 10"/>
-                        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="DataGridCell">
-                                    <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="BorderThickness" Value="3 0 0 0"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                <Setter Property="Background" Value="{StaticResource BgNavActive}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-                        <Setter Property="Foreground" Value="{StaticResource AccentGold}"/>
-                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
-                        <Setter Property="FontWeight" Value="Medium"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="Padding" Value="14 10"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                        <Setter Property="BorderThickness" Value="0 0 0 1"/>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="FILE"        Binding="{Binding FileName}"         Width="*"/>
-                    <DataGridTextColumn Header="HASH"        Binding="{Binding Hash}"             Width="220"/>
-                    <DataGridTextColumn Header="DETECTION"   Binding="{Binding DetectionReason}"  Width="170"/>
-                    <DataGridTextColumn Header="TIMESTAMP"   Binding="{Binding Timestamp}"        Width="170"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <!-- Quarantine file list (placeholder rows matching mockup) -->
+            <ItemsControl>
+                <ItemsControl.Items>
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource AccentRedCritical}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentRedCritical}" Text="TROJAN"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="suspicious_script.ps1"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Margin="16 0 0 0"
+                                       Text="14 MIN AGO"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource AccentGoldLight}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentGoldLight}" Text="BYOVD"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="unsigned_driver.sys"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Margin="16 0 0 0"
+                                       Text="1 HOUR AGO"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource AccentRedCritical}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentRedCritical}" Text="YARA"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="cobalt_beacon.bin"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Margin="16 0 0 0"
+                                       Text="YESTERDAY"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource AccentGoldLight}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentGoldLight}" Text="HEURISTIC"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="unknown_packer.exe"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Margin="16 0 0 0"
+                                       Text="2 DAYS AGO"/>
+                        </Grid>
+                    </Border>
+                </ItemsControl.Items>
+            </ItemsControl>
 
             <!-- Bottom actions -->
-            <StackPanel Grid.Row="3"
-                        Orientation="Horizontal"
+            <StackPanel Orientation="Horizontal"
                         Margin="0 18 0 0"
                         HorizontalAlignment="Right">
                 <Button Content="Release Selected"
                         Style="{StaticResource SecondaryButton}"
+                        Command="{Binding ReleaseSelectedCommand}"
                         Margin="0 0 10 0"/>
                 <Button Content="Delete Permanently"
-                        Style="{StaticResource DangerButton}"/>
+                        Style="{StaticResource DangerButton}"
+                        Command="{Binding DeletePermanentlyCommand}"/>
             </StackPanel>
-        </Grid>
+
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

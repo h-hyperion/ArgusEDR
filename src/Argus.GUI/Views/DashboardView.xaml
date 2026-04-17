@@ -165,7 +165,8 @@
                                 Style="{StaticResource ReviewButton}"
                                 VerticalAlignment="Center"
                                 Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}"
-                                Content="Daily Briefing"/>
+                                Content="Daily Briefing"
+                                Command="{Binding DataContext.ShowDailyBriefingCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
                         <Button Grid.Column="2"
                                 Style="{StaticResource ReviewButton}"
                                 VerticalAlignment="Center"

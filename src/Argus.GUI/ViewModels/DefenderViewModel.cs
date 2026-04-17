@@ -53,6 +53,39 @@ public sealed partial class DefenderViewModel : ObservableObject, IDisposable
     [ObservableProperty] private int _activeMonitorCount;
     [ObservableProperty] private string _activeMonitorDisplay = "0/0";
 
+    // ── Local toggle properties (UI-only, no IPC) ─────────────────────────────
+
+    [ObservableProperty] private bool _fileSystemMonitor = true;
+    [ObservableProperty] private bool _etwKernelEvents = true;
+    [ObservableProperty] private bool _amsiInterception = true;
+    [ObservableProperty] private bool _byovdDetection;
+    [ObservableProperty] private bool _dnsSinkhole = true;
+    [ObservableProperty] private bool _edrFreezeDetection = true;
+
+    /// <summary>
+    /// Computed display string for the "ACTIVE MONITORS" stat card, e.g. "5/6".
+    /// </summary>
+    public string ActiveMonitorText => $"{CountActiveToggles()}/6";
+
+    private int CountActiveToggles()
+    {
+        int count = 0;
+        if (FileSystemMonitor) count++;
+        if (EtwKernelEvents) count++;
+        if (AmsiInterception) count++;
+        if (ByovdDetection) count++;
+        if (DnsSinkhole) count++;
+        if (EdrFreezeDetection) count++;
+        return count;
+    }
+
+    partial void OnFileSystemMonitorChanged(bool value) => OnPropertyChanged(nameof(ActiveMonitorText));
+    partial void OnEtwKernelEventsChanged(bool value) => OnPropertyChanged(nameof(ActiveMonitorText));
+    partial void OnAmsiInterceptionChanged(bool value) => OnPropertyChanged(nameof(ActiveMonitorText));
+    partial void OnByovdDetectionChanged(bool value) => OnPropertyChanged(nameof(ActiveMonitorText));
+    partial void OnDnsSinkholeChanged(bool value) => OnPropertyChanged(nameof(ActiveMonitorText));
+    partial void OnEdrFreezeDetectionChanged(bool value) => OnPropertyChanged(nameof(ActiveMonitorText));
+
     // ── Filter / status bar (existing) ───────────────────────────────────────
 
     [ObservableProperty] private string _selectedFilter = "ALL";

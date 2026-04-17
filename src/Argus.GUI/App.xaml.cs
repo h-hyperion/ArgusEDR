@@ -1,4 +1,5 @@
 using System.IO;
+using System.Threading;
 using System.Windows;
 using Argus.Defender.Dns;
 using Argus.Defender.Guard;
@@ -13,6 +14,12 @@ namespace Argus.GUI;
 
 public partial class App : Application
 {
+    // Per-user named mutex: the GUI runs as the logged-in user, so Local\ scope
+    // is correct (ProgramFiles is per-machine, but the GUI process is per-user).
+    private const string SingleInstanceMutexName =
+        @"Local\Argus-EDR-GUI-9F1E4A3C-B77E-4A5B-A1C9-D2F5E8B0C3A1";
+
+    private Mutex? _singleInstanceMutex;
     private GuiPipeBridge? _pipeBridge;
     private DefenderPipeBridge? _defenderBridge;
     private TrayIconManager? _trayIcon;
@@ -24,6 +31,18 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        // Single-instance gate: if another GUI is already running, exit quietly.
+        _singleInstanceMutex = new Mutex(initiallyOwned: true, SingleInstanceMutexName, out var createdNew);
+        if (!createdNew)
+        {
+            // Not the first instance. Release our handle on the mutex and bail
+            // before any services, tray icon, or windows get constructed.
+            _singleInstanceMutex.Dispose();
+            _singleInstanceMutex = null;
+            Shutdown();
+            return;
+        }
 
         ParseArguments(e.Args);
 
@@ -152,6 +171,14 @@ public partial class App : Application
         _trayIcon?.Dispose();
         _defenderBridge?.Dispose();
         _pipeBridge?.Dispose();
+
+        if (_singleInstanceMutex is not null)
+        {
+            try { _singleInstanceMutex.ReleaseMutex(); } catch { }
+            _singleInstanceMutex.Dispose();
+            _singleInstanceMutex = null;
+        }
+
         Log.CloseAndFlush();
         base.OnExit(e);
     }

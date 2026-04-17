@@ -1,4 +1,5 @@
 using Argus.GUI.IPC;
+using Argus.GUI.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics;
@@ -13,6 +14,7 @@ public sealed partial class MainViewModel : ObservableObject
     [ObservableProperty] private ObservableObject? _currentView;
     [ObservableProperty] private bool _isSafeMode;
     [ObservableProperty] private string _safeModeReason = string.Empty;
+    [ObservableProperty] private string _repairStatus = string.Empty;
 
     /// <summary>
     /// Pretty-printed title for the topbar, derived from the current view.
@@ -79,15 +81,17 @@ public sealed partial class MainViewModel : ObservableObject
     {
         try
         {
-            var scriptPath = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                "Argus", "installer", "install", "argus.ps1");
+            RepairStatus = "Locating installer...";
 
-            if (!File.Exists(scriptPath))
-                scriptPath = @"C:\ProgramData\Argus\installer\install\argus.ps1";
+            var scriptPath = ResolveInstallerScript();
+            if (scriptPath is null)
+            {
+                RepairStatus = "Installer script not found. Re-run the install one-liner.";
+                Serilog.Log.Warning("Repair: could not locate argus.ps1 in any known location");
+                return;
+            }
 
-            if (!File.Exists(scriptPath))
-                throw new FileNotFoundException("Installer script not found at any known location.");
+            RepairStatus = "Launching repair (elevated)...";
 
             var startInfo = new ProcessStartInfo
             {
@@ -95,25 +99,71 @@ public sealed partial class MainViewModel : ObservableObject
                 Arguments = $"-ExecutionPolicy Bypass -File \"{scriptPath}\" -Repair",
                 UseShellExecute = true,
                 Verb = "runas",
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
             };
 
             using var process = Process.Start(startInfo);
-            if (process != null)
+            if (process is null)
             {
-                await process.WaitForExitAsync();
-                if (process.ExitCode == 0)
-                {
-                    IsSafeMode = false;
-                    SafeModeReason = string.Empty;
-                }
+                RepairStatus = "Failed to start elevated PowerShell.";
+                return;
             }
+
+            await process.WaitForExitAsync();
+            if (process.ExitCode == 0)
+            {
+                IsSafeMode = false;
+                SafeModeReason = string.Empty;
+                RepairStatus = "Repair complete.";
+            }
+            else
+            {
+                RepairStatus = $"Repair script exited with code {process.ExitCode}.";
+            }
+        }
+        catch (System.ComponentModel.Win32Exception ex) when (ex.NativeErrorCode == 1223)
+        {
+            // User dismissed the UAC prompt.
+            RepairStatus = "Repair cancelled (UAC declined).";
         }
         catch (Exception ex)
         {
+            RepairStatus = $"Repair failed: {ex.Message}";
             Serilog.Log.Error(ex, "Failed to run repair script");
         }
+    }
+
+    private static string? ResolveInstallerScript()
+    {
+        // Installer copies argus.ps1 into <InstallDir>\installer\ during first install.
+        // Deployed layout per argus.ps1: $INSTALL_DIR = %ProgramFiles%\Argus.
+        var candidates = new[]
+        {
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                "Argus", "installer", "argus.ps1"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                "Argus", "installer", "install", "argus.ps1"),
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                "Argus", "installer", "install", "argus.ps1"),
+            // Dev fallback: repo checkout next to the running exe.
+            Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..",
+                "installer", "install", "argus.ps1"),
+        };
+
+        foreach (var c in candidates)
+        {
+            try
+            {
+                var full = Path.GetFullPath(c);
+                if (File.Exists(full)) return full;
+            }
+            catch { /* path construction errors are non-fatal */ }
+        }
+        return null;
+    }
+
+    [RelayCommand] private void ShowDailyBriefing()
+    {
+        DailyBriefingDialog.Show(Dashboard);
     }
 
     public void ActivateSafeMode(string reason)

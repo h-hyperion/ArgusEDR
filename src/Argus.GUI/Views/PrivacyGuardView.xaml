@@ -4,32 +4,39 @@
              xmlns:vm="clr-namespace:Argus.GUI.ViewModels">
 
     <ScrollViewer Style="{StaticResource DarkScrollViewer}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <StackPanel>
 
-            <!-- ============================================================ -->
-            <!-- Page header — Cinzel title + gold rule                       -->
-            <!-- ============================================================ -->
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="PRIVACY GUARD" Style="{StaticResource CinzelSectionTitle}"/>
-                <TextBlock Text="Windows privacy hardening — toggle the lenses Argus watches through."
-                           FontFamily="{StaticResource FontBarlow}"
-                           FontSize="13"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0 6 0 0"/>
-                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
-            </StackPanel>
+            <!-- ======================================================== -->
+            <!--  Stat cards row                                           -->
+            <!-- ======================================================== -->
+            <UniformGrid Columns="3" Margin="0 0 0 24">
+                <Border Style="{StaticResource StatCard}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  DENIED TODAY"/>
+                        <TextBlock Style="{StaticResource StatValue}" Text="0" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="Across all sensors"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardB}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  ACTIVE GUARDS"/>
+                        <TextBlock Style="{StaticResource StatValueGold}" Text="{Binding ActiveGuards}" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="{Binding ActiveGuards, StringFormat='{}{0} guards enabled'}"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardCritical}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  LAST ALERT"/>
+                        <TextBlock Style="{StaticResource StatValueCritical}" Text="—" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="No alerts"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
 
-            <!-- ============================================================ -->
-            <!-- Action bar: Enable All / Disable All + Apply                  -->
-            <!-- ============================================================ -->
-            <Grid Grid.Row="1" Margin="0 0 0 10">
+            <!-- ======================================================== -->
+            <!--  Action bar: Enable All / Disable All + Apply             -->
+            <!-- ======================================================== -->
+            <Grid Margin="0 0 0 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
@@ -37,8 +44,8 @@
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
-                    <Button Content="Enable All"  Style="{StaticResource SmallButton}" Margin="0 0 6 0"/>
-                    <Button Content="Disable All" Style="{StaticResource SmallButton}" Margin="6 0 0 0"/>
+                    <Button Content="Enable All"  Style="{StaticResource SmallButton}" Command="{Binding EnableAllCommand}" Margin="0 0 6 0"/>
+                    <Button Content="Disable All" Style="{StaticResource SmallButton}" Command="{Binding DisableAllCommand}" Margin="6 0 0 0"/>
                 </StackPanel>
 
                 <Button Grid.Column="2"
@@ -48,23 +55,40 @@
             </Grid>
 
             <!-- Status message -->
-            <TextBlock Grid.Row="2"
-                       Text="{Binding StatusMessage}"
+            <TextBlock Text="{Binding StatusMessage}"
                        FontFamily="{StaticResource FontBarlow}"
                        FontSize="12"
                        Foreground="{StaticResource AccentGoldLight}"
                        Margin="0 0 0 10"/>
 
-            <!-- ============================================================ -->
-            <!-- Grouped toggle list                                           -->
-            <!-- Outer item = IGrouping<string, GuardToggle>                   -->
-            <!-- ============================================================ -->
-            <ItemsControl Grid.Row="3" ItemsSource="{Binding GroupedToggles}">
+            <!-- ======================================================== -->
+            <!--  Grouped toggle list with per-category enable/disable     -->
+            <!-- ======================================================== -->
+            <ItemsControl ItemsSource="{Binding GroupedToggles}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0 0 0 18">
-                            <!-- Category header -->
-                            <TextBlock Text="{Binding Key}" Style="{StaticResource CategoryHeader}"/>
+                            <!-- Category header with enable/disable buttons -->
+                            <Grid Margin="0 0 0 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Grid.Column="0" Text="{Binding Key}" Style="{StaticResource CategoryHeader}" Margin="0"/>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Button Content="All On"
+                                            Style="{StaticResource SmallButton}"
+                                            Command="{Binding DataContext.EnableCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Key}"
+                                            Margin="0 0 4 0"/>
+                                    <Button Content="All Off"
+                                            Style="{StaticResource SmallButton}"
+                                            Command="{Binding DataContext.DisableCategoryCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding Key}"/>
+                                </StackPanel>
+                            </Grid>
                             <Rectangle Height="1" Fill="{StaticResource GoldRule}" Margin="0 0 0 10"/>
 
                             <!-- Toggles in this category -->
@@ -77,16 +101,10 @@
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-
-                                                <!-- Title + description -->
                                                 <StackPanel Grid.Column="0" Margin="0 0 16 0">
-                                                    <TextBlock Text="{Binding Name}"
-                                                               Style="{StaticResource ToggleRowTitle}"/>
-                                                    <TextBlock Text="{Binding Description}"
-                                                               Style="{StaticResource ToggleRowSub}"/>
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource ToggleRowTitle}"/>
+                                                    <TextBlock Text="{Binding Description}" Style="{StaticResource ToggleRowSub}"/>
                                                 </StackPanel>
-
-                                                <!-- Gold pill toggle -->
                                                 <CheckBox Grid.Column="1"
                                                           Style="{StaticResource ToggleSwitch}"
                                                           IsChecked="{Binding Enabled}"
@@ -102,17 +120,6 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <!-- Footer apply -->
-            <Border Grid.Row="4"
-                    BorderBrush="{StaticResource BorderDefault}"
-                    BorderThickness="0 1 0 0"
-                    Padding="0 16 0 0"
-                    Margin="0 18 0 0">
-                <Button Content="Apply Changes"
-                        Style="{StaticResource PrimaryButton}"
-                        Command="{Binding ApplySelectedCommand}"
-                        HorizontalAlignment="Right"/>
-            </Border>
-        </Grid>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

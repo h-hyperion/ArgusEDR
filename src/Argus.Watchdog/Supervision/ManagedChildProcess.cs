@@ -300,7 +300,11 @@ public sealed class ManagedChildProcess : IAsyncDisposable
 
     private async Task HeartbeatWatchdogAsync(IRunningProcess proc, CancellationToken ct)
     {
-        var timeout = TimeSpan.FromSeconds(ArgusConstants.HeartbeatTimeoutSeconds);
+        // Two-tier timeout: a generous window while the child is cold-starting
+        // (Starting state), a tight window once it's Running. Prevents
+        // false-positive kills during DI build / monitor spin-up.
+        var startupGrace   = TimeSpan.FromSeconds(ArgusConstants.HeartbeatStartupGraceSeconds);
+        var runtimeTimeout = TimeSpan.FromSeconds(ArgusConstants.HeartbeatTimeoutSeconds);
 
         try
         {
@@ -308,11 +312,13 @@ public sealed class ManagedChildProcess : IAsyncDisposable
             {
                 await Task.Delay(TimeSpan.FromSeconds(1), ct).ConfigureAwait(false);
 
-                if (DateTimeOffset.UtcNow - _lastHeartbeat > timeout)
+                var limit = State == ChildState.Starting ? startupGrace : runtimeTimeout;
+
+                if (DateTimeOffset.UtcNow - _lastHeartbeat > limit)
                 {
                     _log.LogWarning(
-                        "[{Name}] Heartbeat timeout ({Seconds}s); killing process.",
-                        _descriptor.Name, ArgusConstants.HeartbeatTimeoutSeconds);
+                        "[{Name}] Heartbeat timeout ({Seconds}s, state={State}); killing process.",
+                        _descriptor.Name, (int)limit.TotalSeconds, State);
                     proc.Kill();
                     return;
                 }

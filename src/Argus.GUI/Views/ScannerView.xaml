@@ -4,129 +4,271 @@
              xmlns:vm="clr-namespace:Argus.GUI.ViewModels">
 
     <ScrollViewer Style="{StaticResource DarkScrollViewer}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackPanel>
 
-            <!-- Page header -->
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="SCANNER" Style="{StaticResource CinzelSectionTitle}"/>
-                <TextBlock Text="Deep scan and file upload analysis"
-                           FontFamily="{StaticResource FontBarlow}"
-                           FontSize="13"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0 6 0 0"/>
-                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
-            </StackPanel>
+            <!-- ======================================================== -->
+            <!--  DEEP SCAN — feature panel with gold border + glow       -->
+            <!--  Matches the HTML mockup's .panel-feature treatment.     -->
+            <!-- ======================================================== -->
+            <Border Style="{StaticResource FeaturePanel}" Margin="0 0 0 18">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-            <TabControl Grid.Row="1"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Foreground="{StaticResource TextPrimary}">
-                <TabControl.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-                        <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
-                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Padding" Value="22 10"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="bg"
-                                            Background="{TemplateBinding Background}"
-                                            Padding="{TemplateBinding Padding}"
-                                            BorderBrush="{StaticResource BorderDefault}"
-                                            BorderThickness="1 1 1 0"
-                                            Margin="0 0 4 0">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="bg" Property="Background" Value="{StaticResource BgStatCard}"/>
-                                            <Setter TargetName="bg" Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                            <Setter TargetName="bg" Property="BorderThickness" Value="1 2 1 0"/>
-                                            <Setter Property="Foreground" Value="{StaticResource AccentGoldLight}"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.Resources>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Deep Scan"
+                                   FontFamily="{StaticResource FontCinzel}"
+                                   FontSize="24" FontWeight="Medium"
+                                   Foreground="{StaticResource AccentGoldLight}"/>
+                        <TextBlock Text="YARA · AMSI · BEHAVIORAL · THREAT INTEL CROSS-REFERENCE"
+                                   FontFamily="{StaticResource FontBarlowCondensed}"
+                                   FontSize="12" FontWeight="Medium"
+                                   Foreground="{StaticResource TextMuted}"
+                                   Margin="0 6 0 20"/>
 
-                <!-- Deep Scan Tab -->
-                <TabItem Header="DEEP SCAN">
-                    <Border Style="{StaticResource ContentCard}" Margin="0">
-                        <StackPanel>
-                            <TextBlock Text="—  SCAN TARGET  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 14"/>
-
-                            <CheckBox Content="Scan user files"     Margin="0 0 0 8"/>
-                            <CheckBox Content="Scan system files"   Margin="0 0 0 8"/>
-                            <CheckBox Content="Scan registry"       Margin="0 0 0 8"/>
-                            <CheckBox Content="Heuristic analysis"  Margin="0 0 0 16"/>
-
-                            <Button Content="Start Scan"
-                                    Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Left"
-                                    Margin="0 8"/>
-
-                            <Border Margin="0 24 0 0"
-                                    Padding="20"
-                                    Background="{StaticResource BgStatCard}"
+                        <!-- Scan targets: 2-column grid matching mockup -->
+                        <UniformGrid Columns="2" Rows="2">
+                            <Border Background="#40000000"
                                     BorderBrush="{StaticResource BorderDefault}"
-                                    BorderThickness="1">
-                                <TextBlock Text="Scan results will appear here"
-                                           FontFamily="{StaticResource FontBarlow}"
-                                           FontSize="12"
-                                           Foreground="{StaticResource TextMuted}"
-                                           HorizontalAlignment="Center"/>
+                                    BorderThickness="1" Padding="16 12" Margin="0 0 10 10">
+                                <DockPanel>
+                                    <CheckBox DockPanel.Dock="Left"
+                                              IsChecked="{Binding ScanUserFiles}"
+                                              VerticalAlignment="Center" Margin="0 0 14 0"/>
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontBarlowCondensed}"
+                                               FontSize="11" Foreground="{StaticResource AccentGold}"
+                                               HorizontalAlignment="Right"
+                                               Text="62 GB"/>
+                                    <TextBlock Text="User profile"
+                                               FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"/>
+                                </DockPanel>
                             </Border>
-                        </StackPanel>
-                    </Border>
-                </TabItem>
-
-                <!-- Upload Tab -->
-                <TabItem Header="UPLOAD">
-                    <Border Style="{StaticResource ContentCard}" Margin="0">
-                        <StackPanel>
-                            <Border BorderBrush="{StaticResource AccentGold}"
-                                    BorderThickness="2"
-                                    Padding="40"
-                                    Margin="0 0 0 16"
-                                    Background="{StaticResource BgStatCard}">
-                                <StackPanel HorizontalAlignment="Center">
-                                    <TextBlock Text="DROP FILES HERE"
-                                               FontFamily="{StaticResource FontCinzel}"
-                                               FontSize="16"
-                                               FontWeight="SemiBold"
-                                               Foreground="{StaticResource AccentGoldLight}"
-                                               HorizontalAlignment="Center"/>
-                                    <TextBlock Text="or click to browse"
-                                               FontFamily="{StaticResource FontBarlow}"
-                                               FontSize="12"
-                                               Foreground="{StaticResource TextMuted}"
-                                               Margin="0 6 0 0"
-                                               HorizontalAlignment="Center"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Padding="20"
-                                    Background="{StaticResource BgStatCard}"
+                            <Border Background="#40000000"
                                     BorderBrush="{StaticResource BorderDefault}"
-                                    BorderThickness="1">
-                                <TextBlock Text="Uploaded files will appear here"
-                                           FontFamily="{StaticResource FontBarlow}"
-                                           FontSize="12"
-                                           Foreground="{StaticResource TextMuted}"
-                                           HorizontalAlignment="Center"/>
+                                    BorderThickness="1" Padding="16 12" Margin="0 0 0 10">
+                                <DockPanel>
+                                    <CheckBox DockPanel.Dock="Left"
+                                              IsChecked="{Binding ScanSystemFiles}"
+                                              VerticalAlignment="Center" Margin="0 0 14 0"/>
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontBarlowCondensed}"
+                                               FontSize="11" Foreground="{StaticResource AccentGold}"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Text="System files"
+                                               FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"/>
+                                </DockPanel>
                             </Border>
-                        </StackPanel>
+                            <Border Background="#40000000"
+                                    BorderBrush="{StaticResource BorderDefault}"
+                                    BorderThickness="1" Padding="16 12" Margin="0 0 10 0">
+                                <DockPanel>
+                                    <CheckBox DockPanel.Dock="Left"
+                                              IsChecked="{Binding ScanRegistry}"
+                                              VerticalAlignment="Center" Margin="0 0 14 0"/>
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontBarlowCondensed}"
+                                               FontSize="11" Foreground="{StaticResource AccentGold}"
+                                               HorizontalAlignment="Right"
+                                               Text="—"/>
+                                    <TextBlock Text="Registry"
+                                               FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"/>
+                                </DockPanel>
+                            </Border>
+                            <Border Background="#40000000"
+                                    BorderBrush="{StaticResource BorderDefault}"
+                                    BorderThickness="1" Padding="16 12">
+                                <DockPanel>
+                                    <CheckBox DockPanel.Dock="Left"
+                                              IsChecked="{Binding HeuristicAnalysis}"
+                                              VerticalAlignment="Center" Margin="0 0 14 0"/>
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontBarlowCondensed}"
+                                               FontSize="11" Foreground="{StaticResource AccentGold}"
+                                               HorizontalAlignment="Right"
+                                               Text="—"/>
+                                    <TextBlock Text="Heuristic analysis"
+                                               FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                               Foreground="{StaticResource TextSecondary}"
+                                               VerticalAlignment="Center"/>
+                                </DockPanel>
+                            </Border>
+                        </UniformGrid>
+                    </StackPanel>
+
+                    <Button Grid.Column="1"
+                            Content="Begin Scan"
+                            Style="{StaticResource ReviewButton}"
+                            Command="{Binding StartScanCommand}"
+                            VerticalAlignment="Top"
+                            Margin="24 0 0 0"/>
+                </Grid>
+            </Border>
+
+            <!-- Progress bar (visible during scan) -->
+            <Border Background="{StaticResource BgStatCard}"
+                    BorderBrush="{StaticResource BorderDefault}"
+                    BorderThickness="1"
+                    ClipToBounds="True"
+                    Height="4" Margin="0 0 0 8">
+                <ProgressBar Value="{Binding ScanProgress}"
+                             Minimum="0" Maximum="100"
+                             Background="Transparent"
+                             Foreground="{StaticResource AccentGold}"
+                             BorderThickness="0"/>
+            </Border>
+
+            <!-- Scan status text -->
+            <TextBlock Text="{Binding Status}"
+                       FontFamily="{StaticResource FontBarlow}"
+                       FontSize="12"
+                       Foreground="{StaticResource TextSecondary}"
+                       Margin="0 0 0 18"/>
+
+            <!-- ======================================================== -->
+            <!--  Stat cards row                                           -->
+            <!-- ======================================================== -->
+            <UniformGrid Columns="3" Margin="0 0 0 28">
+                <Border Style="{StaticResource StatCard}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  LAST FULL SCAN"/>
+                        <TextBlock Style="{StaticResource StatValue}" Text="—" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="No scans yet"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardB}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  YARA RULES"/>
+                        <TextBlock Style="{StaticResource StatValueGold}" Text="0" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="Awaiting sync"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardCritical}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  AVG SCAN TIME"/>
+                        <TextBlock Style="{StaticResource StatValueCritical}" Text="—" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="No data"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <!-- ======================================================== -->
+            <!--  Recent Scans (matches HTML mockup)                       -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  RECENT SCANS  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
+
+            <ItemsControl>
+                <ItemsControl.Items>
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource StatusGreen}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource StatusGreen}" Text="COMPLETE"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="Full system scan"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Text="2D AGO · 14:08"/>
+                        </Grid>
                     </Border>
-                </TabItem>
-            </TabControl>
-        </Grid>
+
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource StatusGreen}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource StatusGreen}" Text="COMPLETE"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="Downloads quick scan"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Text="3D AGO · 01:22"/>
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource AccentGoldLight}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentGoldLight}" Text="PARTIAL"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="USB mount scan — 1 warning"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Text="5D AGO · 04:51"/>
+                        </Grid>
+                    </Border>
+                </ItemsControl.Items>
+            </ItemsControl>
+
+            <!-- ======================================================== -->
+            <!--  File Upload (secondary section)                          -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  FILE UPLOAD  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 24 0 12"/>
+
+            <Border Style="{StaticResource ContentCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                               Foreground="{StaticResource TextSecondary}"
+                               Text="Select individual files for targeted analysis"
+                               VerticalAlignment="Center"/>
+                    <Button Grid.Column="1"
+                            Content="Browse Files"
+                            Style="{StaticResource SecondaryButton}"
+                            Command="{Binding BrowseFilesCommand}"
+                            VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -4,201 +4,256 @@
              xmlns:vm="clr-namespace:Argus.GUI.ViewModels">
 
     <ScrollViewer Style="{StaticResource DarkScrollViewer}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackPanel>
 
-            <!-- Page header -->
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="SETTINGS" Style="{StaticResource CinzelSectionTitle}"/>
-                <TextBlock Text="DNS, API keys, and update policy"
-                           FontFamily="{StaticResource FontBarlow}"
-                           FontSize="13"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0 6 0 0"/>
-                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
-            </StackPanel>
+            <!-- ======================================================== -->
+            <!--  General — toggle rows matching mockup                   -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  GENERAL  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
 
-            <TabControl Grid.Row="1"
-                        Background="Transparent"
-                        BorderBrush="Transparent"
-                        Foreground="{StaticResource TextPrimary}">
-                <TabControl.Resources>
-                    <Style TargetType="TabItem">
-                        <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-                        <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
-                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Padding" Value="22 10"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="bg"
-                                            Background="{TemplateBinding Background}"
-                                            Padding="{TemplateBinding Padding}"
-                                            BorderBrush="{StaticResource BorderDefault}"
-                                            BorderThickness="1 1 1 0"
-                                            Margin="0 0 4 0">
-                                        <ContentPresenter VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter TargetName="bg" Property="Background" Value="{StaticResource BgStatCard}"/>
-                                            <Setter TargetName="bg" Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                            <Setter TargetName="bg" Property="BorderThickness" Value="1 2 1 0"/>
-                                            <Setter Property="Foreground" Value="{StaticResource AccentGoldLight}"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.Resources>
+            <!-- Start with Windows -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="Start with Windows" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="Watchdog service autostart" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1"
+                              Style="{StaticResource ToggleSwitch}"
+                              IsChecked="{Binding LaunchAtStartup}"
+                              VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
 
-                <!-- General Tab -->
-                <TabItem Header="GENERAL" IsSelected="True">
-                    <Border Style="{StaticResource ContentCard}" Margin="0">
-                        <StackPanel>
-                            <TextBlock Text="—  GENERAL SETTINGS  —"
-                                       Style="{StaticResource CinzelSectionTitle}"
-                                       FontSize="13"
-                                       Margin="0 0 0 16"/>
+            <!-- Telemetry -->
+            <Border Style="{StaticResource ToggleRow}" Opacity="0.6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="Telemetry" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="Permanently disabled — Argus phones home to nobody" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1"
+                              Style="{StaticResource ToggleSwitch}"
+                              IsChecked="False" IsEnabled="False"
+                              VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
 
-                            <Border Style="{StaticResource ToggleRow}" Margin="0 0 0 8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
-                                        <TextBlock Text="Launch Argus at startup"
-                                                   Style="{StaticResource ToggleRowTitle}"/>
-                                        <TextBlock Text="Start minimized to system tray when you log in"
-                                                   Style="{StaticResource ToggleRowSub}"/>
-                                    </StackPanel>
-                                    <CheckBox Grid.Column="1"
-                                              Style="{StaticResource ToggleSwitch}"
-                                              IsChecked="{Binding LaunchAtStartup}"
-                                              VerticalAlignment="Center"/>
-                                </Grid>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </TabItem>
+            <!-- Automatic signature updates -->
+            <Border Style="{StaticResource ToggleRow}" Margin="0 0 0 28">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="Automatic signature updates" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="YARA + Sigma + threat intel feeds" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1"
+                              Style="{StaticResource ToggleSwitch}"
+                              IsChecked="True"
+                              VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
 
-                <!-- DNS Tab -->
-                <TabItem Header="DNS">
-                    <Border Style="{StaticResource ContentCard}" Margin="0">
-                        <StackPanel>
-                            <TextBlock Text="—  DNS CONFIGURATION  —"
-                                       Style="{StaticResource CinzelSectionTitle}"
-                                       FontSize="13"
-                                       Margin="0 0 0 16"/>
+            <!-- ======================================================== -->
+            <!--  About — feature panel matching mockup                   -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  ABOUT  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
 
-                            <TextBlock Text="PROFILE"
-                                       FontFamily="{StaticResource FontBarlowCondensed}"
-                                       FontSize="11"
-                                       FontWeight="Medium"
-                                       Foreground="{StaticResource AccentGold}"
-                                       Margin="0 0 0 6"/>
-                            <ComboBox ItemsSource="{Binding DnsProfiles}"
-                                      SelectedItem="{Binding SelectedDnsProfile}"
-                                      DisplayMemberPath="Name"
-                                      Style="{DynamicResource DarkComboBox}"
-                                      Margin="0 0 0 18"/>
+            <Border Style="{StaticResource FeaturePanel}" Margin="0 0 0 28">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Argus EDR"
+                                   FontFamily="{StaticResource FontCinzel}"
+                                   FontSize="24" FontWeight="Medium"
+                                   Foreground="{StaticResource AccentGoldLight}"/>
+                        <TextBlock FontFamily="{StaticResource FontBarlowCondensed}"
+                                   FontSize="12" FontWeight="Medium"
+                                   Foreground="{StaticResource TextMuted}"
+                                   Margin="0 6 0 0"
+                                   Text="VERSION 2.1.1 · ENGINE BUILD 2111 · MIT LICENSE"/>
+                        <TextBlock FontFamily="{StaticResource FontBarlowCondensed}"
+                                   FontSize="12" FontWeight="Medium"
+                                   Foreground="{StaticResource TextMuted}"
+                                   Margin="0 2 0 0"
+                                   Text="USER-MODE C# ON .NET 8 · FREE AND OPEN SOURCE FOREVER"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1"
+                            Content="Check for Updates"
+                            Style="{StaticResource SecondaryButton}"
+                            VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- ======================================================== -->
+            <!--  DNS Configuration                                        -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  DNS CONFIGURATION  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
+
+            <Border Style="{StaticResource ContentCard}" Margin="0 0 0 28">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Grid.Row="0">
+                        <TextBlock Text="PROFILE"
+                                   FontFamily="{StaticResource FontBarlowCondensed}"
+                                   FontSize="11" FontWeight="Medium"
+                                   Foreground="{StaticResource AccentGold}"
+                                   Margin="0 0 0 6"/>
+                        <ComboBox ItemsSource="{Binding DnsProfiles}"
+                                  SelectedItem="{Binding SelectedDnsProfile}"
+                                  Style="{DynamicResource DarkComboBox}"
+                                  Width="260"
+                                  HorizontalAlignment="Left">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}"
+                                               FontFamily="{StaticResource FontBarlow}"
+                                               FontSize="13"
+                                               Foreground="{StaticResource TextPrimary}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button Grid.Column="1" Grid.Row="0"
+                            Content="Apply DNS Settings"
+                            Style="{StaticResource PrimaryButton}"
+                            Command="{Binding ApplyDnsCommand}"
+                            VerticalAlignment="Bottom"/>
+
+                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0 16 0 0">
+                        <StackPanel Margin="0 0 48 0">
                             <TextBlock Text="PRIMARY DNS"
                                        FontFamily="{StaticResource FontBarlowCondensed}"
-                                       FontSize="11"
-                                       FontWeight="Medium"
+                                       FontSize="10" FontWeight="Medium"
                                        Foreground="{StaticResource AccentGold}"
-                                       Margin="0 0 0 6"/>
+                                       Margin="0 0 0 4"/>
                             <TextBlock Text="{Binding SelectedDnsProfile.Primary}"
                                        FontFamily="{StaticResource FontCinzel}"
-                                       FontSize="16"
-                                       Foreground="{StaticResource TextPrimary}"
-                                       Margin="0 0 0 18"/>
-
+                                       FontSize="15"
+                                       Foreground="{StaticResource TextPrimary}"/>
+                        </StackPanel>
+                        <StackPanel>
                             <TextBlock Text="SECONDARY DNS"
                                        FontFamily="{StaticResource FontBarlowCondensed}"
-                                       FontSize="11"
-                                       FontWeight="Medium"
+                                       FontSize="10" FontWeight="Medium"
                                        Foreground="{StaticResource AccentGold}"
-                                       Margin="0 0 0 6"/>
+                                       Margin="0 0 0 4"/>
                             <TextBlock Text="{Binding SelectedDnsProfile.Secondary}"
                                        FontFamily="{StaticResource FontCinzel}"
-                                       FontSize="16"
-                                       Foreground="{StaticResource TextPrimary}"
-                                       Margin="0 0 0 18"/>
-
-                            <Button Content="Apply DNS Settings"
-                                    Style="{StaticResource PrimaryButton}"
-                                    Command="{Binding ApplyDnsCommand}"
-                                    HorizontalAlignment="Left"
-                                    Margin="0 12 0 0"/>
+                                       FontSize="15"
+                                       Foreground="{StaticResource TextPrimary}"/>
                         </StackPanel>
-                    </Border>
-                </TabItem>
+                    </StackPanel>
 
-                <!-- API Keys Tab -->
-                <TabItem Header="API KEYS">
-                    <Border Style="{StaticResource ContentCard}" Margin="0">
-                        <StackPanel>
-                            <TextBlock Text="—  SERVICE API KEYS  —"
-                                       Style="{StaticResource CinzelSectionTitle}"
-                                       FontSize="13"
-                                       Margin="0 0 0 16"/>
+                    <TextBlock Grid.Row="2" Grid.ColumnSpan="2"
+                               Text="{Binding StatusMessage}"
+                               FontFamily="{StaticResource FontBarlow}"
+                               FontSize="11"
+                               Foreground="{StaticResource AccentGoldLight}"
+                               Margin="0 12 0 0"/>
+                </Grid>
+            </Border>
 
-                            <Border Background="{StaticResource BgStatCard}"
-                                    BorderBrush="{StaticResource BorderDefault}"
-                                    BorderThickness="1"
-                                    Padding="20 14"
-                                    Margin="0 0 0 16">
-                                <TextBlock Text="VirusTotal — Not configured"
-                                           FontFamily="{StaticResource FontBarlow}"
-                                           FontSize="12"
-                                           Foreground="{StaticResource TextMuted}"/>
-                            </Border>
+            <!-- ======================================================== -->
+            <!--  API Keys                                                 -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  SERVICE API KEYS  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
 
-                            <Button Content="Add Key"
-                                    Style="{StaticResource SecondaryButton}"
-                                    HorizontalAlignment="Left"/>
-                        </StackPanel>
-                    </Border>
-                </TabItem>
+            <StackPanel Margin="0 0 0 28">
+                <Border Style="{StaticResource ContentCard}" Margin="0 0 0 8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding VirusTotalKeyStatus}"
+                                   FontFamily="{StaticResource FontBarlow}"
+                                   FontSize="12"
+                                   Foreground="{StaticResource TextMuted}"
+                                   VerticalAlignment="Center"/>
+                        <Button Grid.Column="1"
+                                Content="Add Key"
+                                Style="{StaticResource SecondaryButton}"
+                                Command="{Binding AddApiKeyCommand}"
+                                CommandParameter="VirusTotal"/>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource ContentCard}" Margin="0 0 0 8">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0"
+                                   Text="{Binding AbuseIpdbKeyStatus}"
+                                   FontFamily="{StaticResource FontBarlow}"
+                                   FontSize="12"
+                                   Foreground="{StaticResource TextMuted}"
+                                   VerticalAlignment="Center"/>
+                        <Button Grid.Column="1"
+                                Content="Add Key"
+                                Style="{StaticResource SecondaryButton}"
+                                Command="{Binding AddApiKeyCommand}"
+                                CommandParameter="AbuseIPDB"/>
+                    </Grid>
+                </Border>
+                <TextBlock Text="{Binding ApiKeyStatusMessage}"
+                           FontFamily="{StaticResource FontBarlow}"
+                           FontSize="11"
+                           Foreground="{StaticResource AccentGoldLight}"
+                           Margin="4 4 0 0"/>
+            </StackPanel>
 
-                <!-- Auto-Update Tab -->
-                <TabItem Header="AUTO-UPDATE">
-                    <Border Style="{StaticResource ContentCard}" Margin="0">
-                        <StackPanel>
-                            <TextBlock Text="—  UPDATE POLICY  —"
-                                       Style="{StaticResource CinzelSectionTitle}"
-                                       FontSize="13"
-                                       Margin="0 0 0 16"/>
+            <!-- ======================================================== -->
+            <!--  Update Policy                                            -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  UPDATE POLICY  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
 
-                            <StackPanel Margin="0 0 0 8">
-                                <RadioButton Content="Minor updates only"
-                                             Margin="0 6"
-                                             GroupName="UpdatePolicy"/>
-                                <RadioButton Content="Minor and major updates"
-                                             Margin="0 6"
-                                             GroupName="UpdatePolicy"/>
-                                <RadioButton Content="Critical only"
-                                             Margin="0 6"
-                                             GroupName="UpdatePolicy"/>
-                            </StackPanel>
+            <Border Style="{StaticResource ContentCard}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <RadioButton Content="Critical updates only" Margin="0 4" GroupName="UpdatePolicy"/>
+                        <RadioButton Content="Minor and major updates" Margin="0 4" GroupName="UpdatePolicy" IsChecked="True"/>
+                        <RadioButton Content="All updates (including pre-release)" Margin="0 4" GroupName="UpdatePolicy"/>
+                    </StackPanel>
+                    <Button Grid.Column="1"
+                            Content="Save Policy"
+                            Style="{StaticResource PrimaryButton}"
+                            VerticalAlignment="Top"/>
+                </Grid>
+            </Border>
 
-                            <Button Content="Save Policy"
-                                    Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Left"
-                                    Margin="0 16 0 0"/>
-                        </StackPanel>
-                    </Border>
-                </TabItem>
-            </TabControl>
-        </Grid>
+        </StackPanel>
     </ScrollViewer>
 </UserControl>
