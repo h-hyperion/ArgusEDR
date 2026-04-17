@@ -29,3 +29,7 @@ publish/
 
 # AI context files
 CLAUDE.md
+.claude/
+.superpowers/
+ObsidianBrain/
+docs/

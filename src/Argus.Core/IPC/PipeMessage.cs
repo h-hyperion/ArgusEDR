@@ -10,7 +10,13 @@ public enum PipeMessageType
     ThreatAlert, ScanRequest, ScanResult,
     SafeModeActivate, SafeModeDeactivate,
     GuardApply, GuardStatus,
-    ModuleError                              // Unified error reporting
+    ModuleError,                             // Unified error reporting
+
+    // Defender IPC (Task 6)
+    Defender_GetMonitorStates,
+    Defender_ToggleMonitor,
+    Defender_MonitorStatesResponse,
+    Defender_ToggleMonitorResponse,
 }
 
 public sealed class PipeMessage

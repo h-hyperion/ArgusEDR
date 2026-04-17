@@ -29,13 +29,17 @@ public static class ArgusConstants
     public static readonly string ApiKeysPath          = Path.Combine(ConfigDir, "api_keys.json");
     public static readonly string YaraManifestPath     = Path.Combine(YaraDir, "manifest.sha256");
 
+    // ── Sentinel & Config Files (continued) ────────────────────────────────
+    public static readonly string MonitorConfigPath = Path.Combine(ConfigDir, "MonitorConfig.json");
+    public static readonly string ManifestPath      = Path.Combine(InstallDir, "manifest.json");
+
     // ── Named Pipe ──────────────────────────────────────────────────────────
-    public const string PipeName = "ArgusEDR";
-    public const string PipeFullPath = @"\\.\pipe\ArgusEDR";
+    public const string PipeName        = "ArgusEDR";
+    public const string PipeFullPath    = @"\\.\pipe\ArgusEDR";
+    public const string DefenderPipeName = "argus-defender";
 
     // ── Windows Service Names ───────────────────────────────────────────────
     public const string WatchdogServiceName = "ArgusWatchdog";
-    public const string DefenderServiceName = "ArgusDefender";
 
     // ── Registry Keys ───────────────────────────────────────────────────────
     public const string RegistryRoot     = @"HKEY_LOCAL_MACHINE\SOFTWARE\Argus";
@@ -53,6 +57,14 @@ public static class ArgusConstants
     // ── Timing Constants ────────────────────────────────────────────────────
     public static readonly TimeSpan HeartbeatInterval        = TimeSpan.FromSeconds(5);
     public static readonly TimeSpan HeartbeatTimeout          = TimeSpan.FromSeconds(10);
+    public const int HeartbeatIntervalSeconds          = 5;
+    public const int HeartbeatTimeoutSeconds           = 10;
+    // Cold-start allowance: DI build + BackgroundService spin-up + YARA
+    // compilation + ETW session create can push well past HeartbeatTimeoutSeconds
+    // on a slow machine. Supervisor applies this larger budget until the first
+    // heartbeat lands (State transitions Starting → Running), then tightens.
+    public const int HeartbeatStartupGraceSeconds      = 30;
+    public const int MaxConsecutiveRestartFailures     = 5;
     public static readonly TimeSpan HashVerificationInterval  = TimeSpan.FromSeconds(30);
     public static readonly TimeSpan CanaryCheckInterval       = TimeSpan.FromSeconds(60);
     public const int EventPipelineCapacity = 50_000;

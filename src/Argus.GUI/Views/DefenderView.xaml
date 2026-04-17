@@ -4,119 +4,130 @@
              xmlns:vm="clr-namespace:Argus.GUI.ViewModels">
 
     <ScrollViewer Style="{StaticResource DarkScrollViewer}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <StackPanel>
 
-            <!-- Page header -->
-            <StackPanel Grid.Row="0">
-                <TextBlock Text="DEFENDER" Style="{StaticResource CinzelSectionTitle}"/>
-                <TextBlock Text="Real-time protection activity log"
-                           FontFamily="{StaticResource FontBarlow}"
-                           FontSize="13"
-                           Foreground="{StaticResource TextSecondary}"
-                           Margin="0 6 0 0"/>
-                <Rectangle Height="2" Margin="0 14 0 18" Fill="{StaticResource GoldRule}"/>
-            </StackPanel>
+            <!-- ======================================================== -->
+            <!--  Stat cards row                                           -->
+            <!-- ======================================================== -->
+            <UniformGrid Columns="3" Margin="0 0 0 24">
+                <Border Style="{StaticResource StatCard}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  ETW EVENTS / MIN"/>
+                        <TextBlock Style="{StaticResource StatValue}" Text="0" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="Awaiting service"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardB}" Margin="0 0 14 0">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  ACTIVE MONITORS"/>
+                        <TextBlock Style="{StaticResource StatValueGold}" Text="{Binding ActiveMonitorText}" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="Requires Watchdog"/>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource StatCardCritical}">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource StatLabel}" Text="▸  SIGMA RULES"/>
+                        <TextBlock Style="{StaticResource StatValueCritical}" Text="—" FontSize="30"/>
+                        <TextBlock Style="{StaticResource StatFootText}" Text="v2.2 feature"/>
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
 
-            <!-- Filter pills -->
-            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0 0 0 12">
-                <Border Background="{StaticResource BgBadgeGreen}" Padding="12 5" Margin="0 0 8 0">
-                    <TextBlock Text="ALL"
-                               FontFamily="{StaticResource FontBarlowCondensed}"
-                               FontSize="11"
-                               FontWeight="Medium"
-                               Foreground="{StaticResource TextBadgeGreen}"/>
-                </Border>
-                <Border Background="{StaticResource BgBadgeRed}" Padding="12 5" Margin="0 0 8 0">
-                    <TextBlock Text="MALICIOUS"
-                               FontFamily="{StaticResource FontBarlowCondensed}"
-                               FontSize="11"
-                               FontWeight="Medium"
-                               Foreground="{StaticResource TextBadgeRed}"/>
-                </Border>
-                <Border Background="{StaticResource BgBadgeGold}" Padding="12 5" Margin="0 0 8 0">
-                    <TextBlock Text="SUSPICIOUS"
-                               FontFamily="{StaticResource FontBarlowCondensed}"
-                               FontSize="11"
-                               FontWeight="Medium"
-                               Foreground="{StaticResource TextBadgeGold}"/>
-                </Border>
-                <Border Background="{StaticResource BgBadgeGray}" Padding="12 5">
-                    <TextBlock Text="CLEAN"
-                               FontFamily="{StaticResource FontBarlowCondensed}"
-                               FontSize="11"
-                               FontWeight="Medium"
-                               Foreground="{StaticResource TextBadgeGray}"/>
-                </Border>
-            </StackPanel>
+            <!-- ======================================================== -->
+            <!--  Real-Time Protection toggles                             -->
+            <!-- ======================================================== -->
+            <TextBlock Text="—  REAL-TIME PROTECTION  —" Style="{StaticResource CinzelSectionTitle}" FontSize="13" Margin="0 0 0 12"/>
 
-            <!-- Activity DataGrid -->
-            <DataGrid Grid.Row="2"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      Background="{StaticResource BgStatCard}"
-                      BorderBrush="{StaticResource BorderDefault}"
-                      BorderThickness="1"
-                      Foreground="{StaticResource TextPrimary}"
-                      RowBackground="{StaticResource BgStatCard}"
-                      AlternatingRowBackground="{StaticResource BgSurface}"
-                      GridLinesVisibility="Horizontal"
-                      HeadersVisibility="Column"
-                      HorizontalGridLinesBrush="{StaticResource BorderDefault}"
-                      CanUserResizeRows="False"
-                      CanUserSortColumns="True"
-                      SelectionMode="Single"
-                      SelectionUnit="FullRow">
-                <DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderThickness" Value="0"/>
-                        <Setter Property="Padding" Value="14 10"/>
-                        <Setter Property="FontFamily" Value="{StaticResource FontBarlow}"/>
-                        <Setter Property="FontSize" Value="12"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="DataGridCell">
-                                    <Border BorderThickness="{TemplateBinding BorderThickness}"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            Padding="{TemplateBinding Padding}">
-                                        <ContentPresenter VerticalAlignment="Center"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter Property="BorderThickness" Value="3 0 0 0"/>
-                                <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                                <Setter Property="Background" Value="{StaticResource BgNavActive}"/>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="{StaticResource BgSurface}"/>
-                        <Setter Property="Foreground" Value="{StaticResource AccentGold}"/>
-                        <Setter Property="FontFamily" Value="{StaticResource FontBarlowCondensed}"/>
-                        <Setter Property="FontWeight" Value="Medium"/>
-                        <Setter Property="FontSize" Value="11"/>
-                        <Setter Property="Padding" Value="14 10"/>
-                        <Setter Property="BorderBrush" Value="{StaticResource AccentGold}"/>
-                        <Setter Property="BorderThickness" Value="0 0 0 1"/>
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="TIME"          Binding="{Binding Time}"        Width="120"/>
-                    <DataGridTextColumn Header="TYPE"          Binding="{Binding Type}"        Width="120"/>
-                    <DataGridTextColumn Header="EVENT"         Binding="{Binding Event}"       Width="*"/>
-                    <DataGridTextColumn Header="THREAT LEVEL"  Binding="{Binding ThreatLevel}" Width="140"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+            <!-- File System Monitor -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="File System Monitor" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="Watches for mass encryption and shadow deletion" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding FileSystemMonitor}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- ETW Kernel Events -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="ETW Kernel Events" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="Process create / network / registry tracing" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding EtwKernelEvents}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- AMSI Script Interception -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="AMSI Script Interception" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="PowerShell, VBScript, .NET dynamic code" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding AmsiInterception}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- BYOVD Driver Detection -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="BYOVD Driver Detection" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="LOLDrivers.io feed cross-reference" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding ByovdDetection}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- DNS Sinkhole -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="DNS Sinkhole" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="OpenPhish + custom blocklists" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding DnsSinkhole}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- EDR-Freeze Detection -->
+            <Border Style="{StaticResource ToggleRow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0 0 16 0">
+                        <TextBlock Text="EDR-Freeze Detection" Style="{StaticResource ToggleRowTitle}"/>
+                        <TextBlock Text="WER handle monitoring (detect-only)" Style="{StaticResource ToggleRowSub}"/>
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Style="{StaticResource ToggleSwitch}" IsChecked="{Binding EdrFreezeDetection}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+        </StackPanel>
     </ScrollViewer>
 </UserControl>

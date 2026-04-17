@@ -113,7 +113,7 @@
                                   HorizontalAlignment="Center"
                                   VerticalAlignment="Center"
                                   Data="M 26,6 L 46,26 L 26,46 L 6,26 Z M 12,26 C 18,18 34,18 40,26 C 34,34 18,34 12,26 Z M 26,21 A 5,5 0 1 0 26,31 A 5,5 0 1 0 26,21 Z"
-                                  Visibility="{Binding IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}">
+                                  Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}">
                                 <Path.Effect>
                                     <DropShadowEffect Color="#FFE8C578" BlurRadius="6" ShadowDepth="0" Opacity="0.7"/>
                                 </Path.Effect>
@@ -127,7 +127,7 @@
                                        Foreground="White"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"
-                                       Visibility="{Binding IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
+                                       Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
                                 <TextBlock.Effect>
                                     <DropShadowEffect Color="#FFE83D55" BlurRadius="14" ShadowDepth="0" Opacity="0.9"/>
                                 </TextBlock.Effect>
@@ -139,7 +139,7 @@
                         <!-- ============================================ -->
                         <StackPanel Grid.Column="1" Margin="24 0 0 0" VerticalAlignment="Center">
                             <!-- Vigilant text -->
-                            <StackPanel Visibility="{Binding IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}">
+                            <StackPanel Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}">
                                 <TextBlock Style="{StaticResource BannerTitle}" Text="Argus is Watching"/>
                                 <TextBlock Style="{StaticResource BannerSubtitle}">
                                     <Run Text="{Binding ProtectionStatus}"/>
@@ -151,10 +151,10 @@
                             </StackPanel>
 
                             <!-- Alert text -->
-                            <StackPanel Visibility="{Binding IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
+                            <StackPanel Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
                                 <TextBlock Style="{StaticResource BannerTitle}" Text="Safe Mode Active"/>
                                 <TextBlock Style="{StaticResource BannerSubtitle}"
-                                           Text="{Binding SafeModeReason, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                           Text="{Binding DataContext.SafeModeReason, RelativeSource={RelativeSource AncestorType=Window}}"/>
                             </StackPanel>
                         </StackPanel>
 
@@ -164,14 +164,24 @@
                         <Button Grid.Column="2"
                                 Style="{StaticResource ReviewButton}"
                                 VerticalAlignment="Center"
-                                Visibility="{Binding IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}"
-                                Content="Daily Briefing"/>
-                        <Button Grid.Column="2"
-                                Style="{StaticResource ReviewButton}"
-                                VerticalAlignment="Center"
-                                Visibility="{Binding IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}"
-                                Content="Review Incident"
-                                Command="{Binding RepairArgusCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource InverseBoolToVis}}"
+                                Content="Daily Briefing"
+                                Command="{Binding DataContext.ShowDailyBriefingCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                        <StackPanel Grid.Column="2"
+                                    VerticalAlignment="Center"
+                                    Visibility="{Binding DataContext.IsSafeMode, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource BoolToVisibility}}">
+                            <Button Style="{StaticResource ReviewButton}"
+                                    Content="Review Incident"
+                                    Command="{Binding DataContext.RepairArgusCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            <TextBlock Text="{Binding DataContext.RepairStatus, RelativeSource={RelativeSource AncestorType=Window}}"
+                                       FontFamily="{StaticResource FontBarlow}"
+                                       FontSize="11"
+                                       Foreground="{StaticResource AccentGoldLight}"
+                                       TextWrapping="Wrap"
+                                       MaxWidth="240"
+                                       Margin="0 6 0 0"
+                                       HorizontalAlignment="Right"/>
+                        </StackPanel>
                     </Grid>
                 </Border>
             </Grid>
@@ -187,18 +197,18 @@
                 </UniformGrid.Resources>
 
                 <!-- THREATS BLOCKED → Defender (Style A: chevron corner) -->
-                <Button Command="{Binding ShowDefenderCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Command="{Binding DataContext.ShowDefenderCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource StatCard}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource StatLabel}" Text="▸  THREATS BLOCKED"/>
                             <TextBlock Style="{StaticResource StatValueGold}" Text="{Binding ThreatsDetected}"/>
-                            <TextBlock Style="{StaticResource StatFootText}" Text="Real-time defender active"/>
+                            <TextBlock Style="{StaticResource StatFootText}" Text="{Binding ActiveMonitors, StringFormat='Active monitors: {0}'}"/>
                         </StackPanel>
                     </Border>
                 </Button>
 
                 <!-- FILES SCANNED → Scanner (Style B: double frame) -->
-                <Button Command="{Binding ShowScannerCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Command="{Binding DataContext.ShowScannerCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource StatCardB}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource StatLabel}" Text="▸  FILES SCANNED"/>
@@ -210,7 +220,7 @@
 
                 <!-- CRITICAL THREATS → Quarantine (Style C: oxblood critical) -->
                 <Button Margin="0 0 0 0"
-                        Command="{Binding ShowQuarantineCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                        Command="{Binding DataContext.ShowQuarantineCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource StatCardCritical}">
                         <StackPanel>
                             <TextBlock Style="{StaticResource StatLabel}" Text="▸  CRITICAL"/>
@@ -232,7 +242,7 @@
                 </UniformGrid.Resources>
 
                 <!-- QUARANTINED → Quarantine (Style D: fluted) -->
-                <Button Command="{Binding ShowQuarantineCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Command="{Binding DataContext.ShowQuarantineCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource StatCardFluted}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -271,7 +281,7 @@
                 </Button>
 
                 <!-- ENGINE HEALTH → Defender (Style E: centered crest) -->
-                <Button Command="{Binding ShowDefenderCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Command="{Binding DataContext.ShowDefenderCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource StatCardCrest}">
                         <Grid>
                             <Rectangle VerticalAlignment="Top" Height="1" Margin="60 8 60 0" Fill="{StaticResource AccentGold}"/>
@@ -293,7 +303,7 @@
 
                 <!-- SERVICE / INTEL → Settings (Style F: diagonal deco) -->
                 <Button Margin="0 0 0 0"
-                        Command="{Binding ShowSettingsCommand, RelativeSource={RelativeSource AncestorType=Window}}">
+                        Command="{Binding DataContext.ShowSettingsCommand, RelativeSource={RelativeSource AncestorType=Window}}">
                     <Border Style="{StaticResource StatCardDiagonal}">
                         <Grid>
                             <Rectangle Width="22" Height="22"
@@ -324,75 +334,115 @@
 
             <ItemsControl>
                 <ItemsControl.Items>
+                    <!-- Row 1: Clean file scan (mockup style with badge + file path) -->
                     <Border Style="{StaticResource ActivityRow}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center"
-                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       Text="Quick scan completed — 0 threats found"/>
-                            <Border Grid.Column="1" Margin="12 0"
+                            <Border Grid.Column="0" Margin="0 0 16 0"
                                     BorderBrush="{StaticResource StatusGreen}"
                                     BorderThickness="1" Padding="10 4">
                                 <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
                                            Foreground="{StaticResource StatusGreen}" Text="CLEAN"/>
                             </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="C:\Users\Cayde\Downloads\setup.exe"
+                                       TextTrimming="CharacterEllipsis"/>
                             <TextBlock Grid.Column="2" VerticalAlignment="Center"
                                        FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
                                        Foreground="{StaticResource TextMuted}"
-                                       Text="2 H AGO"/>
+                                       Margin="16 0 0 0"
+                                       Text="2 MIN AGO"/>
                         </Grid>
                     </Border>
 
+                    <!-- Row 2: Blocked threat -->
                     <Border Style="{StaticResource ActivityRow}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center"
+                            <Border Grid.Column="0" Margin="0 0 16 0"
+                                    BorderBrush="{StaticResource AccentRedCritical}"
+                                    BorderThickness="1" Padding="10 4">
+                                <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentRedCritical}" Text="BLOCKED"/>
+                            </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
                                        FontFamily="{StaticResource FontBarlow}" FontSize="13"
                                        Foreground="{StaticResource TextSecondary}"
-                                       Text="Privacy guard applied — 24 toggles enforced"/>
-                            <Border Grid.Column="1" Margin="12 0"
+                                       Text="suspicious_script.ps1 — YARA: PowerShell_Downloader"
+                                       TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="2" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
+                                       Foreground="{StaticResource TextMuted}"
+                                       Margin="16 0 0 0"
+                                       Text="14 MIN AGO"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Row 3: BYOVD warning -->
+                    <Border Style="{StaticResource ActivityRow}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Margin="0 0 16 0"
                                     BorderBrush="{StaticResource AccentGoldLight}"
                                     BorderThickness="1" Padding="10 4">
                                 <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
-                                           Foreground="{StaticResource AccentGoldLight}" Text="APPLIED"/>
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource AccentGoldLight}" Text="WARNED"/>
                             </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="unsigned_driver.sys — BYOVD match (LOLDrivers.io)"
+                                       TextTrimming="CharacterEllipsis"/>
                             <TextBlock Grid.Column="2" VerticalAlignment="Center"
                                        FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
                                        Foreground="{StaticResource TextMuted}"
-                                       Text="5 H AGO"/>
+                                       Margin="16 0 0 0"
+                                       Text="1 HOUR AGO"/>
                         </Grid>
                     </Border>
 
+                    <!-- Row 4: Clean file -->
                     <Border Style="{StaticResource ActivityRow}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" VerticalAlignment="Center"
-                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
-                                       Foreground="{StaticResource TextSecondary}"
-                                       Text="Threat intel feeds synchronized"/>
-                            <Border Grid.Column="1" Margin="12 0"
+                            <Border Grid.Column="0" Margin="0 0 16 0"
                                     BorderBrush="{StaticResource StatusGreen}"
                                     BorderThickness="1" Padding="10 4">
                                 <TextBlock FontFamily="{StaticResource FontBarlowCondensed}" FontSize="10"
-                                           Foreground="{StaticResource StatusGreen}" Text="SYNCED"/>
+                                           FontWeight="SemiBold"
+                                           Foreground="{StaticResource StatusGreen}" Text="CLEAN"/>
                             </Border>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center"
+                                       FontFamily="{StaticResource FontBarlow}" FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       Text="MonthlyReport_Q1.xlsx"
+                                       TextTrimming="CharacterEllipsis"/>
                             <TextBlock Grid.Column="2" VerticalAlignment="Center"
                                        FontFamily="{StaticResource FontBarlowCondensed}" FontSize="11"
                                        Foreground="{StaticResource TextMuted}"
-                                       Text="8 M AGO"/>
+                                       Margin="16 0 0 0"
+                                       Text="3 HOURS AGO"/>
                         </Grid>
                     </Border>
                 </ItemsControl.Items>

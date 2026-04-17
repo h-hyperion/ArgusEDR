@@ -79,27 +79,156 @@
             <!-- ============================================================ -->
             <!-- Sidebar — Imperial Crest brand stage + nav                    -->
             <!-- ============================================================ -->
-            <Border Grid.Column="0"
-                    Background="{StaticResource BgSidebarGradient}"
-                    BorderBrush="{StaticResource BorderDefault}"
-                    BorderThickness="0 0 1 0">
+            <Grid Grid.Column="0">
+              <!-- Sidebar background + border -->
+              <Border Background="{StaticResource BgSidebarGradient}"
+                      BorderBrush="{StaticResource BorderDefault}"
+                      BorderThickness="0 0 1 0"/>
+              <!-- Gold edge glow (matching mockup's ::after gradient) -->
+              <Rectangle Width="1" HorizontalAlignment="Right"
+                         Fill="{StaticResource GoldRuleVertical}"
+                         IsHitTestVisible="False" Panel.ZIndex="1"/>
+              <Border>
                 <DockPanel>
-                    <!-- Brand header -->
+                    <!-- ================================================== -->
+                    <!-- Brand header — Imperial Crest                       -->
+                    <!--                                                      -->
+                    <!-- Compass crosshair motif behind ARGUS wordmark,       -->
+                    <!-- horizontal gold rules flanking a crimson-diamond     -->
+                    <!-- "EDR · V2.1.1" plate below it.                       -->
+                    <!-- ================================================== -->
                     <Border DockPanel.Dock="Top"
                             Background="{StaticResource BgBrandHeader}"
                             BorderBrush="{StaticResource BorderDefault}"
                             BorderThickness="0 0 0 1"
-                            Padding="20 32 20 26">
-                        <StackPanel>
-                            <Rectangle Height="2" Margin="14 0 14 14" Fill="{StaticResource GoldRule}"/>
-                            <TextBlock Text="ARGUS"
-                                       Style="{StaticResource WordmarkText}"
-                                       FontSize="30"/>
-                            <TextBlock Margin="0 4 0 0"
-                                       Style="{StaticResource BrandSubText}"
-                                       Text="❖  EDR · v2.1  ❖"/>
-                            <Rectangle Height="2" Margin="14 14 14 0" Fill="{StaticResource GoldRule}"/>
-                        </StackPanel>
+                            Padding="20 34 20 28">
+                        <Grid>
+                            <!-- ================================ -->
+                            <!-- Compass crosshair motif (behind)  -->
+                            <!-- ================================ -->
+                            <Grid HorizontalAlignment="Center"
+                                  VerticalAlignment="Top"
+                                  Width="140" Height="140"
+                                  Margin="0 -8 0 0"
+                                  IsHitTestVisible="False">
+                                <!-- Outer ring -->
+                                <Ellipse Width="140" Height="140"
+                                         Stroke="{StaticResource AccentGold}"
+                                         StrokeThickness="0.8"
+                                         Opacity="0.22"/>
+                                <!-- Inner ring -->
+                                <Ellipse Width="92" Height="92"
+                                         Stroke="{StaticResource AccentGold}"
+                                         StrokeThickness="0.6"
+                                         Opacity="0.18"/>
+                                <!-- Horizontal crosshair -->
+                                <Rectangle Height="0.8" Width="156"
+                                           Fill="{StaticResource AccentGold}"
+                                           Opacity="0.18"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                <!-- Vertical crosshair -->
+                                <Rectangle Width="0.8" Height="156"
+                                           Fill="{StaticResource AccentGold}"
+                                           Opacity="0.18"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                                <!-- Diagonal tick marks (NE/NW/SE/SW) -->
+                                <Rectangle Width="0.5" Height="16"
+                                           Fill="{StaticResource AccentGold}"
+                                           Opacity="0.22"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Margin="0 6 0 0"
+                                           RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <RotateTransform Angle="45"/>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                                <Rectangle Width="0.5" Height="16"
+                                           Fill="{StaticResource AccentGold}"
+                                           Opacity="0.22"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Top"
+                                           Margin="0 6 0 0"
+                                           RenderTransformOrigin="0.5,0.5">
+                                    <Rectangle.RenderTransform>
+                                        <RotateTransform Angle="-45"/>
+                                    </Rectangle.RenderTransform>
+                                </Rectangle>
+                            </Grid>
+
+                            <!-- ================================ -->
+                            <!-- Wordmark + subtitle (foreground)  -->
+                            <!-- ================================ -->
+                            <StackPanel>
+                                <TextBlock Text="ARGUS"
+                                           Style="{StaticResource WordmarkText}"
+                                           FontSize="32"
+                                           HorizontalAlignment="Center">
+                                    <TextBlock.Effect>
+                                        <DropShadowEffect Color="#FFE8C578"
+                                                          BlurRadius="10"
+                                                          ShadowDepth="0"
+                                                          Opacity="0.55"/>
+                                    </TextBlock.Effect>
+                                </TextBlock>
+
+                                <!-- Subtitle plate: rule | diamond | "EDR · V2.1.1" | diamond | rule -->
+                                <Grid Margin="0 10 0 0" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                        <!-- Left gold rule -->
+                                        <Rectangle Width="34" Height="1"
+                                                   Fill="{StaticResource AccentGold}"
+                                                   Opacity="0.75"
+                                                   VerticalAlignment="Center"
+                                                   Margin="0 0 8 0"/>
+                                        <!-- Left crimson diamond -->
+                                        <Rectangle Width="6" Height="6"
+                                                   Fill="{StaticResource AccentRedCritical}"
+                                                   VerticalAlignment="Center"
+                                                   RenderTransformOrigin="0.5,0.5">
+                                            <Rectangle.RenderTransform>
+                                                <RotateTransform Angle="45"/>
+                                            </Rectangle.RenderTransform>
+                                            <Rectangle.Effect>
+                                                <DropShadowEffect Color="#FFE83D55"
+                                                                  BlurRadius="6"
+                                                                  ShadowDepth="0"
+                                                                  Opacity="0.8"/>
+                                            </Rectangle.Effect>
+                                        </Rectangle>
+                                        <!-- Subtitle text -->
+                                        <TextBlock Margin="10 0 10 0"
+                                                   Style="{StaticResource BrandSubText}"
+                                                   Text="EDR · V2.1.1"/>
+                                        <!-- Right crimson diamond -->
+                                        <Rectangle Width="6" Height="6"
+                                                   Fill="{StaticResource AccentRedCritical}"
+                                                   VerticalAlignment="Center"
+                                                   RenderTransformOrigin="0.5,0.5">
+                                            <Rectangle.RenderTransform>
+                                                <RotateTransform Angle="45"/>
+                                            </Rectangle.RenderTransform>
+                                            <Rectangle.Effect>
+                                                <DropShadowEffect Color="#FFE83D55"
+                                                                  BlurRadius="6"
+                                                                  ShadowDepth="0"
+                                                                  Opacity="0.8"/>
+                                            </Rectangle.Effect>
+                                        </Rectangle>
+                                        <!-- Right gold rule -->
+                                        <Rectangle Width="34" Height="1"
+                                                   Fill="{StaticResource AccentGold}"
+                                                   Opacity="0.75"
+                                                   VerticalAlignment="Center"
+                                                   Margin="8 0 0 0"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
                     </Border>
 
                     <!-- Sidebar footer (status) -->
@@ -113,28 +242,29 @@
                                        FontSize="11"
                                        Foreground="{StaticResource TextMuted}">
                                 <Run Foreground="{StaticResource StatusGreen}" Text="●"/>
-                                <Run Text=" PROTECTED · ENGINE 2.1.0"/>
+                                <Run Text=" PROTECTED · ENGINE 2.1.1"/>
                             </TextBlock>
                         </StackPanel>
                     </Border>
 
-                    <!-- Nav Items -->
+                    <!-- Nav Items (uppercase to match mockup's text-transform) -->
                     <StackPanel Margin="0 22 0 0">
-                        <Button Content="Dashboard"     Style="{StaticResource NavButton}"
+                        <Button Content="DASHBOARD"     Style="{StaticResource NavButton}"
                                 Command="{Binding ShowDashboardCommand}"/>
-                        <Button Content="Scanner"       Style="{StaticResource NavButton}"
+                        <Button Content="SCANNER"       Style="{StaticResource NavButton}"
                                 Command="{Binding ShowScannerCommand}"/>
-                        <Button Content="Defender"      Style="{StaticResource NavButton}"
+                        <Button Content="DEFENDER"      Style="{StaticResource NavButton}"
                                 Command="{Binding ShowDefenderCommand}"/>
-                        <Button Content="Privacy Guard" Style="{StaticResource NavButton}"
+                        <Button Content="PRIVACY GUARD" Style="{StaticResource NavButton}"
                                 Command="{Binding ShowPrivacyGuardCommand}"/>
-                        <Button Content="Quarantine"    Style="{StaticResource NavButton}"
+                        <Button Content="QUARANTINE"    Style="{StaticResource NavButton}"
                                 Command="{Binding ShowQuarantineCommand}"/>
-                        <Button Content="Settings"      Style="{StaticResource NavButton}"
+                        <Button Content="SETTINGS"      Style="{StaticResource NavButton}"
                                 Command="{Binding ShowSettingsCommand}"/>
                     </StackPanel>
                 </DockPanel>
-            </Border>
+              </Border>
+            </Grid>
 
             <!-- ============================================================ -->
             <!-- Right side: topbar + content                                  -->
@@ -146,25 +276,37 @@
                 </Grid.RowDefinitions>
 
                 <!-- Topbar -->
-                <Border Grid.Row="0"
-                        BorderBrush="{StaticResource BorderDefault}"
-                        BorderThickness="0 0 0 1"
-                        Padding="36 28 36 22">
+                <Grid Grid.Row="0">
+                  <Border BorderBrush="{StaticResource BorderDefault}"
+                          BorderThickness="0 0 0 1"
+                          Padding="36 28 36 22">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Grid.Column="0" VerticalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock Text="—  " VerticalAlignment="Center"
-                                       FontFamily="{StaticResource FontCinzel}"
-                                       FontSize="28" FontWeight="Light"
-                                       Foreground="{StaticResource AccentGold}"/>
-                            <TextBlock Text="{Binding CurrentPageTitle}"
-                                       Style="{StaticResource CinzelPageTitle}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
+                        <Grid Grid.Column="0" VerticalAlignment="Center">
+                            <!-- Decorative gear/cog behind the title -->
+                            <Path Data="M 20,2 L 22,8 L 28,6 L 26,12 L 32,14 L 26,16 L 28,22 L 22,20 L 20,26 L 18,20 L 12,22 L 14,16 L 8,14 L 14,12 L 12,6 L 18,8 Z M 20,10 A 4,4 0 1 0 20,18 A 4,4 0 1 0 20,10 Z"
+                                  Width="56" Height="56"
+                                  Stretch="Uniform"
+                                  Fill="#08D4AF4B"
+                                  Stroke="#15D4AF4B"
+                                  StrokeThickness="0.5"
+                                  HorizontalAlignment="Left"
+                                  Margin="-8 0 0 0"
+                                  IsHitTestVisible="False"/>
+                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock Text="—  " VerticalAlignment="Center"
+                                           FontFamily="{StaticResource FontCinzel}"
+                                           FontSize="28" FontWeight="Light"
+                                           Foreground="{StaticResource AccentGold}"/>
+                                <TextBlock Text="{Binding CurrentPageTitle}"
+                                           Style="{StaticResource CinzelPageTitle}"
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Grid>
 
                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                             <Border Style="{StaticResource StatusPill}" Margin="0 0 14 0">
@@ -188,12 +330,47 @@
                                     Command="{Binding ShowScannerCommand}"/>
                         </StackPanel>
                     </Grid>
-                </Border>
+                  </Border>
+                  <!-- Gold gradient underline (mockup's topbar::after) -->
+                  <Rectangle Height="1" VerticalAlignment="Bottom"
+                             HorizontalAlignment="Stretch" Margin="36 0"
+                             IsHitTestVisible="False" Panel.ZIndex="1">
+                      <Rectangle.Fill>
+                          <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                              <GradientStop Color="#FFD4AF4B" Offset="0"/>
+                              <GradientStop Color="#00D4AF4B" Offset="0.5"/>
+                          </LinearGradientBrush>
+                      </Rectangle.Fill>
+                  </Rectangle>
+                </Grid>
 
-                <!-- Content area -->
-                <Border Grid.Row="1" Padding="36 26">
-                    <ContentControl Content="{Binding CurrentView}"/>
-                </Border>
+                <!-- Content area — layered radial glow matching Imperial Crest mockup -->
+                <Grid Grid.Row="1">
+                    <!-- Warm crimson radial wash (top-center, like the HTML body background) -->
+                    <Border IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush Center="0.5,-0.1" GradientOrigin="0.5,-0.1"
+                                                  RadiusX="0.7" RadiusY="0.5">
+                                <GradientStop Color="#30C2243A" Offset="0"/>
+                                <GradientStop Color="#00000000" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <!-- Subtle gold warmth (bottom-right corner) -->
+                    <Border IsHitTestVisible="False">
+                        <Border.Background>
+                            <RadialGradientBrush Center="1.0,1.0" GradientOrigin="1.0,1.0"
+                                                  RadiusX="0.6" RadiusY="0.5">
+                                <GradientStop Color="#10D4AF4B" Offset="0"/>
+                                <GradientStop Color="#00000000" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                    </Border>
+                    <!-- Actual content -->
+                    <Border Padding="36 26">
+                        <ContentControl Content="{Binding CurrentView}"/>
+                    </Border>
+                </Grid>
             </Grid>
         </Grid>
 

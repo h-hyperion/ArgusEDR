@@ -30,7 +30,7 @@ $ErrorActionPreference = "Stop"
 # === Configuration ===
 $GITHUB_OWNER = "h-hyperion"
 $GITHUB_REPO = "ArgusEDR"
-$ARGUS_VERSION = "2.1.0"
+$ARGUS_VERSION = "2.1.1"
 $PUBLISHER = "Argus EDR"
 
 # Paths (must match Argus.Core Constants.cs)
@@ -49,6 +49,7 @@ $GUARD_CONFIG_PATH = Join-Path $CONFIG_DIR "GuardConfig.json"
 $SERVICE_NAME = "ArgusWatchdog"
 $GUI_EXE_NAME = "Argus.GUI.exe"
 $WATCHDOG_EXE_NAME = "Argus.Watchdog.exe"
+$DEFENDER_EXE_NAME = "Argus.Defender.exe"
 
 # Shortcut & Registry paths
 $DESKTOP_SHORTCUT = Join-Path $env:PUBLIC "Desktop\Argus EDR.lnk"
@@ -71,6 +72,29 @@ function Write-Msg {
         default   { "White" }
     }
     Write-Host "[$ts] [$Level] $Message" -ForegroundColor $color
+}
+
+# === Manifest Generation ===
+function New-Manifest {
+    param(
+        [string]$InstallDir,
+        [string]$OutputPath
+    )
+
+    Write-Msg "Generating manifest.json..." "INFO"
+
+    $files = @{}
+    Get-ChildItem $InstallDir -Filter "*.exe" -ErrorAction SilentlyContinue | ForEach-Object {
+        $hash = (Get-FileHash $_.FullName -Algorithm SHA256).Hash
+        $files[$_.Name] = "sha256:$hash"
+    }
+
+    @{
+        version = $ARGUS_VERSION
+        files   = $files
+    } | ConvertTo-Json | Set-Content $OutputPath -Encoding UTF8
+
+    Write-Msg "manifest.json written ($($files.Count) entries)" "SUCCESS"
 }
 
 # === Mode Detection ===
@@ -331,9 +355,13 @@ function Install-Fresh {
     Copy-Item $MyInvocation.ScriptName -Destination (Join-Path $installerDest "argus.ps1") -Force -ErrorAction SilentlyContinue
 
     $watchdogPath = Join-Path $INSTALL_DIR $WATCHDOG_EXE_NAME
-    $guiPath = Join-Path $INSTALL_DIR $GUI_EXE_NAME
+    $guiPath     = Join-Path $INSTALL_DIR $GUI_EXE_NAME
+    $manifestPath = Join-Path $INSTALL_DIR "manifest.json"
 
-    # Install Windows Service
+    # Generate manifest covering all installed exes (Watchdog, Defender, GUI)
+    New-Manifest -InstallDir $INSTALL_DIR -OutputPath $manifestPath
+
+    # Install Windows Service (Watchdog only; Defender is spawned by Watchdog)
     Install-WindowsService -BinaryPath $watchdogPath
     Start-WindowsService
 
@@ -392,7 +420,11 @@ function Repair-Argus {
     }
 
     $watchdogPath = Join-Path $INSTALL_DIR $WATCHDOG_EXE_NAME
-    $guiPath = Join-Path $INSTALL_DIR $GUI_EXE_NAME
+    $guiPath     = Join-Path $INSTALL_DIR $GUI_EXE_NAME
+    $manifestPath = Join-Path $INSTALL_DIR "manifest.json"
+
+    # Regenerate manifest after repair (binaries replaced from fresh ZIP)
+    New-Manifest -InstallDir $INSTALL_DIR -OutputPath $manifestPath
 
     Install-WindowsService -BinaryPath $watchdogPath
     Start-WindowsService

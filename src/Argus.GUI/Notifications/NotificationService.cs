@@ -40,13 +40,9 @@ public sealed class NotificationService : IDisposable
                 NotificationType.Warning);
         }
 
-        // Detect safe mode activation
-        if (status.SafeModeActive && !_wasSafeMode)
-        {
-            _wasSafeMode = true;
-            // SafeModeTriggered event handles this
-        }
-        else if (!status.SafeModeActive && _wasSafeMode)
+        // Symmetric edge-tracking for safe mode; the actual "activated" toast
+        // is fired by OnSafeModeTriggered, which uses _wasSafeMode to dedupe.
+        if (!status.SafeModeActive && _wasSafeMode)
         {
             _wasSafeMode = false;
             ShowNotification(
@@ -58,6 +54,12 @@ public sealed class NotificationService : IDisposable
 
     private void OnSafeModeTriggered(string reason)
     {
+        // GuiPipeBridge raises this on every poll while SafeModeActive is true.
+        // Only toast on the false → true edge; the "cleared" side is handled
+        // in OnStatusUpdated and resets _wasSafeMode.
+        if (_wasSafeMode) return;
+        _wasSafeMode = true;
+
         ShowNotification(
             "Threat Detected — Safe Mode Activated",
             $"Argus has detected a critical threat and locked down the system. Reason: {reason}",
