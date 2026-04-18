@@ -1,0 +1,17 @@
+title: Mimikatz DLL Loaded
+id: 6381ed24-a28a-4d1e-bcd6-0c81e5d947ea
+status: test
+description: Detects the loading of a DLL commonly associated with Mimikatz
+tags:
+    - attack.credential_access
+    - attack.t1003.001
+logsource:
+    category: image_load
+    product: windows
+detection:
+    selection:
+        ImageLoaded|endswith:
+            - \mimilib.dll
+            - \mimidrv.sys
+    condition: selection
+level: critical

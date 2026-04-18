@@ -6,6 +6,7 @@
     <Project Path="src/Argus.GUI/Argus.GUI.csproj" />
     <Project Path="src/Argus.Recovery/Argus.Recovery.csproj" />
     <Project Path="src/Argus.Scanner/Argus.Scanner.csproj" />
+    <Project Path="src/Argus.Sigma/Argus.Sigma.csproj" />
     <Project Path="src/Argus.Watchdog/Argus.Watchdog.csproj" />
   </Folder>
   <Folder Name="/tests/">
@@ -14,6 +15,7 @@
     <Project Path="tests/Argus.Engine.Tests/Argus.Engine.Tests.csproj" />
     <Project Path="tests/Argus.Recovery.Tests/Argus.Recovery.Tests.csproj" />
     <Project Path="tests/Argus.Scanner.Tests/Argus.Scanner.Tests.csproj" />
+    <Project Path="tests/Argus.Sigma.Tests/Argus.Sigma.Tests.csproj" />
     <Project Path="tests/Argus.Watchdog.Tests/Argus.Watchdog.Tests.csproj" />
     <Project Path="tests/StubChild/StubChild.csproj" />
   </Folder>

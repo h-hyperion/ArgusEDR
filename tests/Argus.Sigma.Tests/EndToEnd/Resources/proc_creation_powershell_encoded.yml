@@ -1,0 +1,25 @@
+title: Suspicious PowerShell Encoded Command
+id: fb843269-508c-4b76-8b8d-88679db22ce7
+status: test
+description: Detects the execution of PowerShell with an encoded command-line argument
+tags:
+    - attack.execution
+    - attack.t1059.001
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    process:
+        Image|endswith:
+            - \powershell.exe
+            - \pwsh.exe
+    encoded:
+        CommandLine|contains:
+            - ' -e '
+            - ' -en '
+            - ' -enc '
+            - ' -enco '
+    condition: process and encoded
+falsepositives:
+    - Legitimate scripts that use base64 encoding
+level: medium
